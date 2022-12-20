@@ -1,0 +1,100 @@
+********** 8/1/2022 4:23:17 PM **********
+Exception Type: System.Data.SqlClient.SqlException
+Exception: At least one of the following parameters must be specified. "@recipients, @copy_recipients, @blind_copy_recipients".
+Source: Catch Error
+Stack Trace: 
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   at System.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   at System.Data.SqlClient.SqlDataReader.TryNextResult(Boolean& more)
+   at System.Data.SqlClient.SqlDataReader.NextResult()
+   at System.Data.Linq.SqlClient.ObjectReaderCompiler.ObjectReaderSession`1.CheckNextResults()
+   at System.Data.Linq.SqlClient.ObjectReaderCompiler.ObjectReaderSession`1.Buffer()
+   at System.Data.Linq.SqlClient.ObjectReaderCompiler.ObjectReaderSession`1.CompleteUse()
+   at System.Data.Linq.SqlClient.SqlConnectionManager.BootUser(IConnectionUser user)
+   at System.Data.Linq.SqlClient.SqlConnectionManager.UseConnection(IConnectionUser user)
+   at System.Data.Linq.SqlClient.SqlProvider.Execute(Expression query, QueryInfo queryInfo, IObjectReaderFactory factory, Object[] parentArgs, Object[] userArgs, ICompiledSubQuery[] subQueries, Object lastResult)
+   at System.Data.Linq.SqlClient.SqlProvider.ExecuteAll(Expression query, QueryInfo[] queryInfos, IObjectReaderFactory factory, Object[] userArguments, ICompiledSubQuery[] subQueries)
+   at System.Data.Linq.SqlClient.SqlProvider.System.Data.Linq.Provider.IProvider.Execute(Expression query)
+   at System.Data.Linq.DataContext.ExecuteMethodCall(Object instance, MethodInfo methodInfo, Object[] parameters)
+   at DataClasses1DataContext.GetMgrSchedule(Nullable`1 mgrId, Nullable`1 sDate) in c:\testCyberDelta_Saurabh\testMINE\Projects\NT\NTeTmsDev\App_Code\TMSDataClass.designer.cs:line 4415
+   at EmpScheduler.bindgrdEmployeeSchedule() in c:\testCyberDelta_Saurabh\testMINE\Projects\NT\NTeTmsDev\EmpScheduler.aspx.cs:line 166
+TargetSite: Void OnError(System.Data.SqlClient.SqlException, Boolean, System.Action`1[System.Action])
+
+********** 8/1/2022 4:23:19 PM **********
+Inner Exception Type: System.Data.SqlClient.SqlException
+Inner Exception: At least one of the following parameters must be specified. "@recipients, @copy_recipients, @blind_copy_recipients".
+Inner Source: .Net SqlClient Data Provider
+Inner Stack Trace: 
+   at EmpScheduler.bindgrdEmployeeSchedule() in c:\testCyberDelta_Saurabh\testMINE\Projects\NT\NTeTmsDev\EmpScheduler.aspx.cs:line 187
+   at EmpScheduler.btnSaveShift_Click(Object sender, EventArgs e) in c:\testCyberDelta_Saurabh\testMINE\Projects\NT\NTeTmsDev\EmpScheduler.aspx.cs:line 1783
+   at System.Web.UI.WebControls.Button.OnClick(EventArgs e)
+   at System.Web.UI.WebControls.Button.RaisePostBackEvent(String eventArgument)
+   at System.Web.UI.WebControls.Button.System.Web.UI.IPostBackEventHandler.RaisePostBackEvent(String eventArgument)
+   at System.Web.UI.Page.RaisePostBackEvent(IPostBackEventHandler sourceControl, String eventArgument)
+   at System.Web.UI.Page.RaisePostBackEvent(NameValueCollection postData)
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+Exception Type: System.Web.HttpUnhandledException
+Exception: Exception of type 'System.Web.HttpUnhandledException' was thrown.
+Source: Application Page Error
+Stack Trace: 
+   at System.Web.UI.Page.HandleError(Exception e)
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest()
+   at System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   at System.Web.UI.Page.ProcessRequest(HttpContext context)
+   at ASP.empscheduler_aspx.ProcessRequest(HttpContext context) in c:\Users\delta\AppData\Local\Temp\Temporary ASP.NET Files\vs\f58f5b09\e9f07fe3\App_Web_wcepelp1.0.cs:line 0
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStepImpl(IExecutionStep step)
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+TargetSite: Boolean HandleError(System.Exception)
+
+********** 9/1/2022 12:00:27 AM **********
+Exception Type: System.Threading.ThreadAbortException
+Exception: Thread was being aborted.
+Source: Catch Error
+Stack Trace: 
+   at ExportRoster.ExportDataSetToExcel(DataSet ds, String filename) in c:\testCyberDelta_Saurabh\testMINE\Projects\NT\NTeTmsDev\ExportRoster.aspx.cs:line 155
+   at ExportRoster.btnSubmit_Click(Object sender, EventArgs e) in c:\testCyberDelta_Saurabh\testMINE\Projects\NT\NTeTmsDev\ExportRoster.aspx.cs:line 111
+TargetSite: Void ExportDataSetToExcel(System.Data.DataSet, System.String)
+
+********** 9/1/2022 12:00:39 AM **********
+Exception Type: System.Threading.ThreadAbortException
+Exception: Thread was being aborted.
+Source: Catch Error
+Stack Trace: 
+   at ExportRoster.ExportDataSetToExcel(DataSet ds, String filename) in c:\testCyberDelta_Saurabh\testMINE\Projects\NT\NTeTmsDev\ExportRoster.aspx.cs:line 155
+   at ExportRoster.btnSubmit_Click(Object sender, EventArgs e) in c:\testCyberDelta_Saurabh\testMINE\Projects\NT\NTeTmsDev\ExportRoster.aspx.cs:line 111
+TargetSite: Void ExportDataSetToExcel(System.Data.DataSet, System.String)
+
+********** 9/1/2022 12:00:48 AM **********
+Exception Type: System.Threading.ThreadAbortException
+Exception: Thread was being aborted.
+Source: Catch Error
+Stack Trace: 
+   at ExportRoster.ExportDataSetToExcel(DataSet ds, String filename) in c:\testCyberDelta_Saurabh\testMINE\Projects\NT\NTeTmsDev\ExportRoster.aspx.cs:line 155
+   at ExportRoster.btnSubmit_Click(Object sender, EventArgs e) in c:\testCyberDelta_Saurabh\testMINE\Projects\NT\NTeTmsDev\ExportRoster.aspx.cs:line 111
+TargetSite: Void ExportDataSetToExcel(System.Data.DataSet, System.String)
+
+********** 9/1/2022 12:00:59 AM **********
+Exception Type: System.Threading.ThreadAbortException
+Exception: Thread was being aborted.
+Source: Catch Error
+Stack Trace: 
+   at ExportRoster.ExportDataSetToExcel(DataSet ds, String filename) in c:\testCyberDelta_Saurabh\testMINE\Projects\NT\NTeTmsDev\ExportRoster.aspx.cs:line 155
+   at ExportRoster.btnSubmit_Click(Object sender, EventArgs e) in c:\testCyberDelta_Saurabh\testMINE\Projects\NT\NTeTmsDev\ExportRoster.aspx.cs:line 111
+TargetSite: Void ExportDataSetToExcel(System.Data.DataSet, System.String)
+
+********** 9/1/2022 12:01:10 AM **********
+Exception Type: System.Threading.ThreadAbortException
+Exception: Thread was being aborted.
+Source: Catch Error
+Stack Trace: 
+   at ExportRoster.ExportDataSetToExcel(DataSet ds, String filename) in c:\testCyberDelta_Saurabh\testMINE\Projects\NT\NTeTmsDev\ExportRoster.aspx.cs:line 155
+   at ExportRoster.btnSubmit_Click(Object sender, EventArgs e) in c:\testCyberDelta_Saurabh\testMINE\Projects\NT\NTeTmsDev\ExportRoster.aspx.cs:line 111
+TargetSite: Void ExportDataSetToExcel(System.Data.DataSet, System.String)
+

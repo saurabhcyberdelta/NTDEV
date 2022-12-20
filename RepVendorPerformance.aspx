@@ -1,0 +1,212 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/eTMSMaster.Master" AutoEventWireup="true"
+    CodeFile="RepVendorPerformance.aspx.cs" Inherits="RepVendorPerformance" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
+<%@ Register Assembly="Microsoft.ReportViewer.WebForms, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+    Namespace="Microsoft.Reporting.WebForms" TagPrefix="rsweb" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    
+    
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
+            <table align="center" border="0" width="100%">
+                <tr>
+                    <td align="center">
+                        <asp:ValidationSummary ID="ValidationSummary1" runat="server" ShowMessageBox="True"
+                            ShowSummary="False" ValidationGroup="Submit" Height="16px" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <asp:Label ID="lblErrorMsg" runat="server" CssClass="error"></asp:Label>
+                        &nbsp;
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td class="heading">
+                        Vendor Performance Report
+                        <br />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" class="subHeading">
+                        Allows to Generate Vendor Performance Report Card
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" class="subHeading">
+                        <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="UpdatePanel1"
+                            DisplayAfter="0" DynamicLayout="False">
+                            <ProgressTemplate>
+                                <table align="center">
+                                    <tr>
+                                        <td>
+                                            <img src="images/ajax-loader.gif" style="width: 16px; height: 16px" />
+                                        </td>
+                                        <td class="main_bg">
+                                            Loading.....Please Wait!!!
+                                        </td>
+                                    </tr>
+                                </table>
+                            </ProgressTemplate>
+                        </asp:UpdateProgress>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table border="0" cellpadding="4" cellspacing="0" align="left" width="80%" class="tableBorber">
+                            <tr>
+                                <td align="center" class="TDbg" colspan="5">
+                                    Fill The Selection Criteria
+                                    <asp:Label ID="lblFacError" runat="server" CssClass="error" Text="Select Facility"
+                                        Visible="False"></asp:Label>
+                                    &nbsp; &nbsp; &nbsp;
+                                </td>
+                            </tr>
+                            <tr align="center">
+                                <td align="left" valign="top">
+                                    <b>From Date:</b>
+                                </td>
+                                <td align="left" valign="top">
+                                    <b>To Date:</b>&nbsp;
+                                </td>
+                                <td align="left" valign="top">
+                                    <b>Facility Name: </b>
+                                </td>
+                                <td align="left" valign="top">
+                                    <b>Vendor Name:</b>
+                                </td>
+                                <td align="left" rowspan="2" valign="middle">
+                                    <asp:Button ID="btnSubmit" runat="server" Text="Run Report" ValidationGroup="Submit"
+                                        OnClick="btnSubmit_Click" CssClass="Button" />
+                                </td>
+                            </tr>
+                            <tr align="center">
+                                <td align="left" valign="top">
+                                    <asp:TextBox ID="txtStartDate" runat="server" CssClass="TextBox"></asp:TextBox>
+                                    <cc1:CalendarExtender ID="txtStartDate_CalendarExtender" runat="server" Enabled="true"
+                                        TargetControlID="txtStartDate" PopupButtonID="ibcal1">
+                                    </cc1:CalendarExtender>
+                                    &nbsp;<asp:ImageButton ID="ibcal1" runat="server" ImageUrl="~/images/calendar_icon.gif"
+                                        Height="17px" /><br />
+                                    <i>(mm/dd/yyyy)</i>
+                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtStartDate"
+                                        Display="Dynamic" ErrorMessage="Enter Valid Start Date" ValidationExpression="^(([0]?[1-9]|1[0-2])/([0-2]?[0-9]|3[0-1])/[1-2]\d{3})? ?((([0-1]?\d)|(2[0-3])):[0-5]\d)?(:[0-5]\d)?$"
+                                        ValidationGroup="Submit">*</asp:RegularExpressionValidator>
+                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Enter Start Date"
+                                        ControlToValidate="txtStartDate" ValidationGroup="Submit">*</asp:RequiredFieldValidator>
+                                </td>
+                                <td align="left" valign="top">
+                                    <asp:TextBox ID="txtEndDate" runat="server" CssClass="TextBox"></asp:TextBox>
+                                    &nbsp;<asp:ImageButton ID="ibcal2" runat="server" ImageUrl="~/images/calendar_icon.gif"
+                                        Height="17px" />
+                                    <br />
+                                    <cc1:CalendarExtender ID="txtEndDate_CalendarExtender" runat="server" Enabled="True"
+                                        TargetControlID="txtEndDate" PopupButtonID="ibcal2">
+                                    </cc1:CalendarExtender>
+                                    <i>(mm/dd/yyyy)</i>
+                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="txtEndDate"
+                                        Display="Dynamic" ErrorMessage="Enter Valid End Date" ValidationExpression="^(([0]?[1-9]|1[0-2])/([0-2]?[0-9]|3[0-1])/[1-2]\d{3})? ?((([0-1]?\d)|(2[0-3])):[0-5]\d)?(:[0-5]\d)?$"
+                                        ValidationGroup="Submit">*</asp:RegularExpressionValidator>
+                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="Enter End Date"
+                                        ControlToValidate="txtEndDate" ValidationGroup="Submit">*</asp:RequiredFieldValidator>
+                                    <asp:CompareValidator ID="CompareValidator15" runat="server" ControlToCompare="txtStartDate"
+                                        ControlToValidate="txtEndDate" ErrorMessage="End Date cannot be less than Start Date."
+                                        Operator="GreaterThanEqual" SetFocusOnError="True" Type="Date" ValidationGroup="Submit">*</asp:CompareValidator>
+                                </td>
+                                <td align="left" valign="top">
+                                    <asp:DropDownList ID="ddlFacility" runat="server" AppendDataBoundItems="True" CssClass="DropDownListBox3"
+                                        AutoPostBack="True" OnSelectedIndexChanged="ddlFacility_SelectedIndexChanged">
+                                    </asp:DropDownList>
+                                    <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="ddlFacility"
+                                        Display="Dynamic" ErrorMessage="Select Facility" Operator="NotEqual" ValidationGroup="Submit"
+                                        ValueToCompare="0" SetFocusOnError="True">*</asp:CompareValidator>
+                                </td>
+                                <td align="left" valign="top">
+                                    <asp:DropDownList ID="ddlVendor" runat="server" AppendDataBoundItems="True" CssClass="DropDownListBox3">
+                                    </asp:DropDownList>
+                                    <asp:CompareValidator ID="CompareValidator16" runat="server" ControlToValidate="ddlVendor"
+                                        Display="Dynamic" ErrorMessage="Select Vendor" Operator="NotEqual" ValidationGroup="Submit"
+                                        ValueToCompare="0" SetFocusOnError="True">*</asp:CompareValidator>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <table align="left" width="60%">
+                            <tr>
+                                <td>
+                                    <asp:Label ID="lblHeading" runat="server" Font-Bold="True" ForeColor="Black"></asp:Label>
+                                    <br />
+                                </td>
+                                <td align="right">
+                                    <asp:LinkButton ID="lbtnExportExcel" runat="server" OnClick="lbtnExportExcel_Click"
+                                        Visible="False">Export to Excel</asp:LinkButton>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left" colspan="2">
+                                    <asp:DetailsView ID="dvResult" runat="server" AutoGenerateRows="False" BorderStyle="None"
+                                        CaptionAlign="Top" CellPadding="6" CssClass="DetailsView" EmptyDataText="No Data Found"
+                                        ForeColor="#333333" GridLines="None" Height="50px" Width="100%">
+                                        <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                        <CommandRowStyle BackColor="#D1DDF1" Font-Bold="True" />
+                                        <RowStyle BackColor="#EFF3FB" />
+                                        <FieldHeaderStyle BackColor="#DEE8F5" Font-Bold="True" />
+                                        <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                        <Fields>
+                                            <asp:TemplateField HeaderText="Balanced Scorecard Criteria">
+                                                <ItemTemplate>
+                                                    <b>Score/Percentage</b>
+                                                </ItemTemplate>
+                                                <ControlStyle BackColor="#333333" />
+                                                <HeaderStyle BackColor="#333333" ForeColor="White" />
+                                                <ItemStyle BackColor="#333333" ForeColor="White" />
+                                            </asp:TemplateField>
+                                            <asp:BoundField DataField="TotalCabs" HeaderText="Total Cabs" />
+                                            <asp:BoundField DataField="Arrived" HeaderText="Cabs Arrived" />
+                                            <asp:BoundField DataField="OnTime" HeaderText="Total On Time Cab" />
+                                            <asp:BoundField DataField="OnTimePer" DataFormatString="{0:F2}%" HeaderText="% On Time Arrival">
+                                                <ItemStyle ForeColor="Blue" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="Accident" HeaderText="Number of Accidents in Entire Period" />
+                                            <asp:BoundField DataField="AccidentPer" DataFormatString="{0:F2}%" HeaderText="Accident %">
+                                                <ItemStyle ForeColor="Blue" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="CabCompPer" DataFormatString="{0:F2}%" HeaderText="100% Cab Compliances">
+                                                <ItemStyle ForeColor="Blue" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="MisBehavePer" HeaderText="Grooming &amp; General Behaviour/ Etiquttes of the Shift Incharge, Supervisors and  Drivers."
+                                                DataFormatString="{0:F2}%" >
+                                                <ItemStyle ForeColor="Blue" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="CabBreakDown" HeaderText="Cab Break down" />
+                                            <asp:BoundField DataField="CabNoShow" HeaderText="Cab No Show" />
+                                            <asp:BoundField DataField="CabBreakDownPer" DataFormatString="{0:F2}%" HeaderText="Service Failure %">
+                                                <ItemStyle ForeColor="Blue" />
+                                            </asp:BoundField>
+                                            <asp:BoundField HeaderText="Statutory Compliance" />
+                                            <asp:BoundField HeaderText="Contractual Compliance" />
+                                        </Fields>
+                                        <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="Black" Wrap="False" />
+                                        <EditRowStyle BackColor="#2461BF" />
+                                        <AlternatingRowStyle BackColor="White" />
+                                    </asp:DetailsView>
+                                    <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="GetData"
+                                        TypeName="RepArrivalVendorWiseDataSetTableAdapters.RptArrivalVendorWiseTableAdapter">
+                                    </asp:ObjectDataSource>
+                                </td>
+                            </tr>
+                </tr>
+            </table>
+            </td> </tr> </table>
+        </ContentTemplate>
+        <Triggers>
+            <asp:PostBackTrigger ControlID="lbtnExportExcel" />
+        </Triggers>
+    </asp:UpdatePanel>
+</asp:Content>

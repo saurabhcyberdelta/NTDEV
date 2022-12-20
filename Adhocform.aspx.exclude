@@ -1,0 +1,235 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/eTMSMaster.Master" AutoEventWireup="true" CodeFile="Adhocform.aspx.cs" Inherits="Adhocform" %>
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+    
+    
+    <style type="text/css">
+        .style1
+        {
+            height: 76px;
+        }
+        .style2
+        {
+            width: 107px;
+        }
+    </style>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+<asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+        <ContentTemplate>
+            <table align="left" cellpadding="4" cellspacing="0" width="100%">
+                <tr>
+                    <asp:ValidationSummary ID="CheckCriteria" runat="server" ShowMessageBox="True"
+                        ShowSummary="False" ValidationGroup="PageSize" />
+                    <asp:ValidationSummary ID="ValidationSummary2" runat="server" DisplayMode="BulletList"
+                        EnableClientScript="true" ValidationGroup="SetAll" ShowMessageBox="True" ShowSummary="False" />
+                    <td align="center" class="heading" colspan="4">
+                      Adhoc Request Form
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" class="subHeading" colspan="4">
+                        Allows to send a Adhoc Request
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left" colspan="4" class="style1">
+                        <asp:ValidationSummary ID="ValidationSummary3" runat="server" DisplayMode="BulletList"
+                            EnableClientScript="true" HeaderText="Please correct the following information : "
+                            ValidationGroup="save" ShowMessageBox="True" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table align="left" cellpadding="4" cellspacing="0" width="100%" class="tableBorber">
+                            <tr>
+                                <td colspan="6" class="TDbg" align="center">
+                                    Select Shift Schedule Details
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left" valign="middle" width="10%">
+                                    <b>Reason: </b>
+                                </td>
+                                <td align="left" width="25%" >
+                                    <asp:DropDownList ID="ddlReason" runat="server" AppendDataBoundItems="True" 
+                                        >
+                                        <asp:ListItem Value="0">--Select--</asp:ListItem>
+                                    </asp:DropDownList>
+                                    <asp:CompareValidator ID="CompareValidator1" runat="server" ErrorMessage="Select the reason" Text="*" ControlToValidate="ddlReason" ValidationGroup="save" ValueToCompare="0" Operator="NotEqual"></asp:CompareValidator>
+                                </td>
+                                <td align="right" width="5%">
+                                    <b>Facility:</b>
+                                </td>
+                                <td align="left" width="25%">
+                                    <asp:DropDownList ID="ddlFacility" runat="server" AppendDataBoundItems="True">
+                                        <asp:ListItem Value="0">--Select--</asp:ListItem>
+                                        
+                                    </asp:DropDownList>
+                                     <asp:CompareValidator ID="CompareValidator2" runat="server" ErrorMessage="Select the facility" Text="*" ControlToValidate="ddlFacility" ValidationGroup="save" ValueToCompare="0" Operator="NotEqual"></asp:CompareValidator>
+                         
+                                    </td>
+                                <td align="right" width="10%">
+                                  <b>Trip Type</b>
+                                </td>
+                                <td align="left" valign="middle" width="25%">
+                                    <asp:DropDownList ID="ddlTripType" runat="server" AppendDataBoundItems="True" 
+                                        AutoPostBack="True" 
+                                        onselectedindexchanged="ddlTripType_SelectedIndexChanged">
+                                        <asp:ListItem Value="0">--Select--</asp:ListItem>
+                                        <asp:ListItem Value="P">Pick</asp:ListItem>
+                                        <asp:ListItem Value="D">Drop</asp:ListItem>
+                                    </asp:DropDownList>
+                                     <asp:CompareValidator ID="CompareValidator3" runat="server" ErrorMessage="Select the trip type" Text="*" ControlToValidate="ddlTripType" ValidationGroup="save" ValueToCompare="0" Operator="NotEqual"></asp:CompareValidator>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left" valign="middle">
+                                    <b>&nbsp;Shift Date: </b>
+                                </td>
+                                <td align="left" valign="middle" colspan="3" width="30%">
+                                    <asp:TextBox ID="txtToDate" runat="server" AutoPostBack="False" CssClass="TextBox"></asp:TextBox>
+                                    <asp:ImageButton ID="ImgBtnCalendar2" runat="server" ImageUrl="Images/calendar_icon.gif"
+                                        Height="17px" Width="17px" />
+                                    <i>&nbsp;(mm/dd/yyyy)</i>
+                                    <cc1:CalendarExtender ID="CalendarExtender2" runat="server" Animated="False" TargetControlID="txtToDate"
+                                        PopupButtonID="ImgBtnCalendar2" />
+                                        
+                                   <asp:CompareValidator ID="CompareValidator5" runat="server" ErrorMessage="Date could not be less than current date" ControlToValidate="txtToDate" Operator="GreaterThanEqual" Text="*"></asp:CompareValidator>
+         
+                                   
+                                </td>
+                                <td>
+                                    <b>Shift</b></td>
+                                <td align="left">
+                                    <asp:DropDownList ID="ddlShift" runat="server" AppendDataBoundItems="True" 
+                                        Height="16px">
+                                        <asp:ListItem Value="0">--Select--</asp:ListItem>
+                                    </asp:DropDownList>
+                                    <asp:CompareValidator ID="CompareValidator4" runat="server" ErrorMessage="Select the Shift" Text="*" ControlToValidate="ddlShift" ValidationGroup="save" ValueToCompare="0" Operator="NotEqual"></asp:CompareValidator>
+
+                                    
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" colspan="3">
+                                    <asp:UpdateProgress ID="UpdateProgress1" runat="server" 
+                                        AssociatedUpdatePanelID="UpdatePanel1" DisplayAfter="100" DynamicLayout="False">
+                                        <ProgressTemplate>
+                                            <img alt="Loding..." src="images/ajax-loader.gif" 
+                                                style="width: 16px; height: 16px" /> Loading.....Please Wait!!!
+                                        </ProgressTemplate>
+                                    </asp:UpdateProgress>
+                                </td>
+                                <td align="right" colspan="3">
+                                    <asp:CustomValidator ID="CustomValidatorCheckBox" runat="server" 
+                                        Display="Dynamic" 
+                                        ErrorMessage="Cannot proceed because either you did not choose any employee or any shift pattern." 
+                                        
+                                        ValidationGroup="save">*</asp:CustomValidator>
+                                    <asp:Button ID="btnSave" runat="server" CssClass="Button" 
+                                         Text="Send Request" ValidationGroup="save" onclick="btnSave_Click" />
+                                    <cc1:ConfirmButtonExtender ID="ConfirmButton_btnSave" runat="server" 
+                                        ConfirmOnFormSubmit="False" 
+                                        ConfirmText="Are you sure you want to save the selected shift pattern?" 
+                                        TargetControlID="btnSave">
+                                    </cc1:ConfirmButtonExtender>
+                                                           </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
+                            <ContentTemplate>
+                                <table align="left" width="100%">
+                                    <tr>
+                                        <td align="left" valign="middle">
+                                            <asp:GridView ID="grdEmployeeSchedule" runat="server" AutoGenerateColumns="False"
+                                                AllowPaging="False" DataKeyNames="EmployeeId" CssClass="GridView" 
+                                                Width="100%" onselectedindexchanged="grdEmployeeSchedule_SelectedIndexChanged">
+                                                <Columns>
+                                                    <asp:TemplateField HeaderText="ID" HeaderStyle-Width="10" ItemStyle-Width="10">
+                                                        <HeaderTemplate>
+                                                            <asp:CheckBox ID="chkBxHeader" AutoPostBack="true"  runat="server" />
+                                                        </HeaderTemplate>
+                                                        <ItemTemplate>
+                                                            <asp:CheckBox ID="chkBxEmpId" runat="server" />
+                                                            <asp:Label runat="server" ID="EmpID" Text='<%# Eval( "EmployeeId" ) %>' Visible="false"></asp:Label>
+                                                        </ItemTemplate>
+                                                        <HeaderStyle Width="10px" />
+                                                        <ItemStyle Width="10px" />
+                                                    </asp:TemplateField>
+                                                                                                         
+                                                                                                    
+                                                    <asp:TemplateField HeaderText="Employee Details" HeaderStyle-Width="90%" ItemStyle-Width="90%">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="lblempName" runat="server" Text='<%#Eval("EmpName") %>'></asp:Label>
+                                                        </ItemTemplate>
+                                                        <HeaderStyle Width="90%" />
+                                                        <ItemStyle Width="90%" />
+                                                    </asp:TemplateField>
+                                                </Columns>
+                                                <RowStyle CssClass="RowStyle" />
+                                                <FooterStyle CssClass="FooterStyle" />
+                                                <PagerStyle CssClass="PagerStyle" />
+                                                <SelectedRowStyle CssClass="SelectedRowStyle" />
+                                                <HeaderStyle CssClass="HeaderStyle" />
+                                                <EditRowStyle BackColor="#999999" />
+                                                <AlternatingRowStyle CssClass="AltRowStyle" />
+                                            </asp:GridView>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center" valign="middle">
+                                            <asp:Label ID="lblSaveMsg" runat="server" Font-Bold="True" ForeColor="Red"></asp:Label>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <asp:Button ID="Button1" runat="server" Style="visibility: hidden" />
+                        <cc1:ModalPopupExtender ID="ModalPopupExtender1" runat="server" Enabled="True" BackgroundCssClass="modalBackground"
+                            TargetControlID="Button1" PopupControlID="Panel3" CancelControlID="ibtnexit"
+                            DropShadow="True">
+                        </cc1:ModalPopupExtender>
+                        <asp:Panel ID="Panel3" runat="server" BorderColor="Silver" BorderStyle="Solid" BorderWidth="1px"
+                           Style="visibility: hidden" >
+                            <table width="400px" style="border: 1px ridge #000000" cellpadding="0" cellspacing="0">
+                                <tr bgcolor="#003366" height="20">
+                                    <td align="left" style="color: #FFFFFF">
+                                        <b>Following associate roster cannot update because of they are falling under non hiring zone. </b>
+                                    </td>
+                                    <td align="right" width="10%">
+                                        <asp:ImageButton ID="ibtnexit" runat="server" ImageUrl="images/Exit.jpg" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center" colspan="2">
+                                        <asp:GridView ID="grdScheduleNotUpdated" runat="server"
+                                            ShowFooter="True" CssClass="GridView" Width="100%" HorizontalAlign="Center">
+                                            <RowStyle CssClass="RowStyle" />
+                                            <FooterStyle CssClass="FooterStyle" />
+                                            <PagerStyle CssClass="PagerStyle" />
+                                            <SelectedRowStyle CssClass="SelectedRowStyle" />
+                                            <HeaderStyle CssClass="HeaderStyle" />
+                                            <EditRowStyle BackColor="#999999" />
+                                            <AlternatingRowStyle CssClass="AltRowStyle" />
+                                        </asp:GridView>
+                                    </td>
+                                </tr>
+                            </table>
+                        </asp:Panel>
+                    </td>
+                </tr>
+            </table>
+        </ContentTemplate>
+    </asp:UpdatePanel>
+</asp:Content>
+

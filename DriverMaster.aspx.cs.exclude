@@ -1,0 +1,351 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+public partial class DriverMaster : basepage
+{
+    DataClasses1DataContext tmscontext = new DataClasses1DataContext();
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+        {
+
+            BndFacilityDropdown();
+            bndvendordropdown();
+            BndDriverGrid();
+            MultiView1.ActiveViewIndex = 0;
+        }
+
+    }
+
+    public void BndFacilityDropdown()
+    {
+        try
+        {
+            //DropDownList ddlSelectFacility = (DropDownList)DvDriver.FindControl("ddlSelectFacility");
+            ddlSelectFacility.Items.Clear();
+            ListItem liv = new ListItem("Select Facility", "0");
+            ddlSelectFacility.Items.Add(liv);
+            ddlSelectFacility.DataSource = tmscontext.SelectFacility(MyApplicationSession._UserID, MyApplicationSession._ISAdmin);
+            ddlSelectFacility.DataTextField = "facilityName";
+            ddlSelectFacility.DataValueField = "Id";
+            ddlSelectFacility.DataBind();
+
+            ddlSelectFacility.SelectedIndex = ddlSelectFacility.Items.IndexOf(ddlSelectFacility.Items.FindByValue(MyApplicationSession._FacilityID.ToString()));
+            
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+
+            throw (ex);
+        }
+    }
+
+    public void BndDvFacilityDropdown()
+    {
+        try
+        {
+            DropDownList ddldvFacility = (DropDownList)DvDriver.FindControl("ddldvFacility");
+            ddldvFacility.Items.Clear();
+            ListItem liv = new ListItem("Select Facility", "0");
+            ddldvFacility.Items.Add(liv);
+            ddldvFacility.DataSource = tmscontext.SelectFacility(MyApplicationSession._UserID, MyApplicationSession._ISAdmin);
+            ddldvFacility.DataTextField = "facilityName";
+            ddldvFacility.DataValueField = "Id";
+            ddldvFacility.DataBind();
+            ddldvFacility.Focus();
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+
+            throw (ex);
+        }
+    }
+    protected void DvVehicle_ModeChanging(object sender, DetailsViewModeEventArgs e)
+    {
+
+    }
+    protected void DvVehicle_ItemInserting(object sender, DetailsViewInsertEventArgs e)
+    {
+
+    }
+    protected void ddldvFacility_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        BndCabIDDropdown();
+        ResetData();
+    }
+
+    private void ResetData()
+    {
+        ((TextBox)DvDriver.FindControl("txtDvDriverName")).Text = "";
+        ((TextBox)DvDriver.FindControl("txtDateOfJoining")).Text = "";
+        ((TextBox)DvDriver.FindControl("txtdvBadgeNo")).Text = "";
+        ((TextBox)DvDriver.FindControl("txtdvBadgeIssueDate")).Text = "";
+        ((TextBox)DvDriver.FindControl("txtdvBadgeExpiryDate")).Text = "";
+        ((TextBox)DvDriver.FindControl("txtdvLicenseNumber")).Text = "";
+        ((TextBox)DvDriver.FindControl("txtdvLicenseIssuedDate")).Text = "";
+        ((TextBox)DvDriver.FindControl("txtdvLicenseExpiryDate")).Text = "";
+        ((TextBox)DvDriver.FindControl("txtdvTotalExperience")).Text = "";
+        ((TextBox)DvDriver.FindControl("txtdvAreaOfResidence")).Text = "";
+        ((TextBox)DvDriver.FindControl("txtdvContact1")).Text = "";
+        ((TextBox)DvDriver.FindControl("txtdvContact2")).Text = "";
+    }
+
+    public void BndCabIDDropdown()
+    {
+        try
+        {
+            int selFacility = Convert.ToInt32(((DropDownList)DvDriver.FindControl("ddldvFacility")).SelectedValue);
+            DropDownList ddlDvCabID = (DropDownList)DvDriver.FindControl("ddlDvCabID");
+            ddlDvCabID.Items.Clear();
+            ListItem liv = new ListItem("Select CabID", "0");
+            ddlDvCabID.Items.Add(liv);
+            ddlDvCabID.DataSource = tmscontext.SelectVehicle(selFacility);
+            ddlDvCabID.DataTextField = "vehicleNo";
+            ddlDvCabID.DataValueField = "Id";
+            ddlDvCabID.DataBind();            
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+
+            throw (ex);
+        }
+    }
+    protected void ddlDvCabID_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        int selCabID = Convert.ToInt32(((DropDownList)DvDriver.FindControl("ddlDvCabID")).SelectedValue);
+        var result = tmscontext.SelectDriverInfo(selCabID);
+
+        string DriverName = string.Empty, BadgeNo = string.Empty, LicenseNumber = string.Empty, TotalExperience = string.Empty, AreaofResidence = string.Empty, Contact1 = string.Empty, Contact2 = string.Empty;
+        string DateOfJoining = string.Empty, BadgeIssueDate = string.Empty, BadgeExpiryDate = string.Empty, LicenseIssuedDate = string.Empty, LicenseExpiryDate = string.Empty;
+
+        foreach (var result1 in result)
+        {
+            DriverName = result1.DriverName;
+            DateOfJoining = result1.DateOfJoining.ToString();
+            BadgeNo = result1.BadgeNo;
+            BadgeIssueDate = result1.BadgeIssueDate.ToString();
+            BadgeExpiryDate = result1.BadgeExpiryDate.ToString();
+            LicenseNumber = result1.LicenseNumber;
+            LicenseIssuedDate = result1.LicenseIssuedDate.ToString();
+            LicenseExpiryDate = result1.LicenseExpiryDate.ToString();
+            TotalExperience = result1.TotalExperience;
+            AreaofResidence = result1.AreaofResidence;
+            Contact1 = result1.Contact1;
+            Contact2 = result1.Contact2;
+        }
+        ((TextBox)DvDriver.FindControl("txtDvDriverName")).Text = DriverName;
+        ((TextBox)DvDriver.FindControl("txtDateOfJoining")).Text = DateOfJoining;
+        ((TextBox)DvDriver.FindControl("txtdvBadgeNo")).Text = BadgeNo;
+        ((TextBox)DvDriver.FindControl("txtdvBadgeIssueDate")).Text = BadgeIssueDate;
+        ((TextBox)DvDriver.FindControl("txtdvBadgeExpiryDate")).Text = BadgeExpiryDate;
+        ((TextBox)DvDriver.FindControl("txtdvLicenseNumber")).Text = LicenseNumber;
+        ((TextBox)DvDriver.FindControl("txtdvLicenseIssuedDate")).Text = LicenseIssuedDate;
+        ((TextBox)DvDriver.FindControl("txtdvLicenseExpiryDate")).Text = LicenseExpiryDate;
+        ((TextBox)DvDriver.FindControl("txtdvTotalExperience")).Text = TotalExperience;
+        ((TextBox)DvDriver.FindControl("txtdvAreaOfResidence")).Text = AreaofResidence;
+        ((TextBox)DvDriver.FindControl("txtdvContact1")).Text = Contact1;
+        ((TextBox)DvDriver.FindControl("txtdvContact2")).Text = Contact2;
+        ((TextBox)DvDriver.FindControl("txtDvDriverName")).Focus();
+    }
+    protected void lbSave_Click(object sender, EventArgs e)
+    {
+        string DriverName = string.Empty, BadgeNo = string.Empty, LicenseNumber = string.Empty, TotalExperience = string.Empty, AreaofResidence = string.Empty, Contact1 = string.Empty, Contact2 = string.Empty, result = string.Empty;
+        DateTime DateOfJoining, BadgeIssueDate, BadgeExpiryDate, LicenseIssuedDate, LicenseExpiryDate;
+        int CabID;
+        CabID = Convert.ToInt32(((DropDownList)DvDriver.FindControl("ddlDvCabID")).SelectedValue);
+        DriverName = ((TextBox)DvDriver.FindControl("txtDvDriverName")).Text;
+        DateOfJoining = Convert.ToDateTime(((TextBox)DvDriver.FindControl("txtDateOfJoining")).Text);
+        BadgeNo = ((TextBox)DvDriver.FindControl("txtdvBadgeNo")).Text;
+        BadgeIssueDate = Convert.ToDateTime(((TextBox)DvDriver.FindControl("txtdvBadgeIssueDate")).Text);
+        BadgeExpiryDate = Convert.ToDateTime(((TextBox)DvDriver.FindControl("txtdvBadgeExpiryDate")).Text);
+        LicenseNumber = ((TextBox)DvDriver.FindControl("txtdvLicenseNumber")).Text;
+        LicenseIssuedDate = Convert.ToDateTime(((TextBox)DvDriver.FindControl("txtdvLicenseIssuedDate")).Text);
+        LicenseExpiryDate = Convert.ToDateTime(((TextBox)DvDriver.FindControl("txtdvLicenseExpiryDate")).Text);
+        TotalExperience = ((TextBox)DvDriver.FindControl("txtdvTotalExperience")).Text;
+        AreaofResidence = ((TextBox)DvDriver.FindControl("txtdvAreaOfResidence")).Text;
+        Contact1 = ((TextBox)DvDriver.FindControl("txtdvContact1")).Text;
+        Contact2 = ((TextBox)DvDriver.FindControl("txtdvContact2")).Text;
+
+        tmscontext.SaveDriverInfo(CabID, DriverName, DateOfJoining, BadgeNo, BadgeIssueDate, BadgeExpiryDate, LicenseNumber, LicenseIssuedDate, LicenseExpiryDate, TotalExperience, AreaofResidence, Contact1, Contact2, MyApplicationSession._UserID, ref result);
+        if (result == "UPDATE")
+        {
+            ShowMessage("Driver Information Updated successfully.");
+        }
+        else
+        {
+            ShowMessage("Driver Information Added successfully.");
+        }
+        BndFacilityDropdown();
+        bndvendordropdown();
+        BndDriverGrid();
+        MultiView1.ActiveViewIndex = 0;
+    }
+
+    private void ShowMessage(string message)
+    {
+        string jScript = "alert('" + message + "');";
+        ScriptManager.RegisterStartupScript(this, this.GetType(), "updated", jScript, true);
+
+    }
+    protected void ddlSelectFacility_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        bndvendordropdown();
+        BndDriverGrid();
+    }
+
+    protected void bndvendordropdown()
+    {
+        ddlSelectVendor.Items.Clear();
+        ListItem liv = new ListItem("-Select-", "0");
+        ddlSelectVendor.Items.Add(liv);
+        ddlSelectVendor.DataSource = tmscontext.GetVendorByFac(Convert.ToInt32(ddlSelectFacility.SelectedValue));
+        ddlSelectVendor.DataTextField = "vendorname";
+        ddlSelectVendor.DataValueField = "Id";
+        ddlSelectVendor.DataBind();
+    }
+
+
+    protected void ddlSelectVendor_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        BndDriverGrid();
+    }
+
+    public void BndDriverGrid()
+    {
+        //*************************************************************//
+        //Binds the vehicle grid with vehicle list in DB     //
+        //*************************************************************//
+        try
+        {
+
+            GVDriverMaster.DataSource = tmscontext.GetDriverDetails(Convert.ToInt32(ddlSelectFacility.SelectedValue), Convert.ToInt32(ddlSelectVendor.SelectedValue));
+            GVDriverMaster.DataBind();
+
+            MultiView1.ActiveViewIndex = 0;
+            //if (GVDriverMaster.Rows.Count < 1)
+            //{
+            //    MultiView1.ActiveViewIndex = 1;
+            //    BndDvFacilityDropdown();
+            //}
+            //else
+            //{
+            //    MultiView1.ActiveViewIndex = 0;
+            //}
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+
+            throw (ex);
+
+        }
+    }
+    protected void GVDriverMaster_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        GVDriverMaster.PageIndex = e.NewPageIndex;
+        BndDriverGrid();
+    }
+    protected void lbtnAddNew_Click(object sender, EventArgs e)
+    {
+        BndDvFacilityDropdown();
+        BndCabIDDropdown();
+        ResetData();
+        MultiView1.ActiveViewIndex = 1;
+    }
+    protected void GVDriverMaster_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        try
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                string BadgeExpiryDateColor = Convert.ToString(DataBinder.Eval(e.Row.DataItem, "BadgeExpiryDateColor"));
+                string LicenseExpiryDateColor = Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LicenseExpiryDateColor"));
+
+                getGrdColor(e, BadgeExpiryDateColor, LicenseExpiryDateColor);
+
+                //if (Convert.ToString(DataBinder.Eval(e.Row.DataItem, "BadgeExpiryDateColor")) == string.Empty && Convert.ToString(DataBinder.Eval(e.Row.DataItem, "actVehicleEndTime")) == string.Empty)
+                //{
+                //    e.Row.BackColor = System.Drawing.Color.Tomato;
+                //}
+                //else if (Convert.ToString(DataBinder.Eval(e.Row.DataItem, "actVehicleStartTime")) != string.Empty && Convert.ToString(DataBinder.Eval(e.Row.DataItem, "actVehicleEndTime")) == string.Empty)
+                //{
+                //    e.Row.BackColor = System.Drawing.Color.Yellow;
+                //}
+                //else if (Convert.ToString(DataBinder.Eval(e.Row.DataItem, "actVehicleStartTime")) != string.Empty && Convert.ToString(DataBinder.Eval(e.Row.DataItem, "actVehicleEndTime")) != string.Empty)
+                //{
+                //    e.Row.BackColor = System.Drawing.Color.Lime;
+                //}
+
+                //if (Convert.ToString(DataBinder.Eval(e.Row.DataItem, "isCancel")) == "True")
+                //{
+                //    e.Row.BackColor = System.Drawing.Color.Tomato;
+                //}
+                //e.Row.Attributes.Add("onMouseOver", "this.style.backgroundColor='Red'");
+                //e.Row.Attributes.Add("onMouseOut", "this.style.backgroundColor='Transparent'");
+
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+
+            throw (ex);
+        }
+    }
+
+    private static void getGrdColor(GridViewRowEventArgs e, string BadgeExpiryDateColor, string LicenseExpiryDateColor)
+    {
+        if (BadgeExpiryDateColor == "Red")
+        {
+            e.Row.Cells[5].ForeColor = System.Drawing.Color.Red;
+        }
+        else if (BadgeExpiryDateColor == "Green")
+        {
+            e.Row.Cells[5].ForeColor = System.Drawing.Color.Green;
+        }
+        else if (BadgeExpiryDateColor == "Blue")
+        {
+            e.Row.Cells[5].ForeColor = System.Drawing.Color.SteelBlue;
+        }
+        else
+        {
+            e.Row.Cells[5].ForeColor = System.Drawing.Color.Black;
+        }
+
+        if (LicenseExpiryDateColor == "Red")
+        {
+            e.Row.Cells[8].ForeColor = System.Drawing.Color.Red;
+        }
+        else if (LicenseExpiryDateColor == "Green")
+        {
+            e.Row.Cells[8].ForeColor = System.Drawing.Color.Green;
+        }
+        else if (LicenseExpiryDateColor == "Blue")
+        {
+            e.Row.Cells[8].ForeColor = System.Drawing.Color.SteelBlue;
+        }
+        else
+        {
+            e.Row.Cells[8].ForeColor = System.Drawing.Color.Black;
+        }
+    }
+    protected void lbClose_Click(object sender, EventArgs e)
+    {
+        BndFacilityDropdown();
+        bndvendordropdown();
+        BndDriverGrid();
+        MultiView1.ActiveViewIndex = 0;
+    }
+}

@@ -1,0 +1,76 @@
+********** 6/14/2019 2:51:41 AM **********
+Inner Exception Type: System.IO.FileNotFoundException
+Inner Exception: Could not load file or assembly 'Microsoft.ReportViewer.Common, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' or one of its dependencies. The system cannot find the file specified.
+Inner Source: Microsoft.ReportViewer.WebForms
+Inner Stack Trace: 
+   at Microsoft.Reporting.WebForms.LocalReport..ctor()
+   at Microsoft.Reporting.WebForms.LocalModeSession..ctor()
+   at Microsoft.Reporting.WebForms.ReportHierarchy..ctor(ServerReport serverReport)
+   at Microsoft.Reporting.WebForms.ReportViewer.CreateReportHierarchy()
+   at Microsoft.Reporting.WebForms.ReportViewer..ctor()
+   at ASP.newbillingreports_aspx.__BuildControlReportViewer1() in d:\E\eTMS Softwares\NTeTmsDev\NewBillingReports.aspx:line 155
+   at ASP.newbillingreports_aspx.__BuildControlContent2(Control __ctrl) in d:\E\eTMS Softwares\NTeTmsDev\NewBillingReports.aspx:line 11
+   at System.Web.UI.CompiledTemplateBuilder.InstantiateIn(Control container)
+   at ASP.etmsmaster_master.__BuildControlContentPlaceHolder1() in d:\E\eTMS Softwares\NTeTmsDev\eTMSMaster.Master:line 96
+   at ASP.etmsmaster_master.__BuildControlform1() in d:\E\eTMS Softwares\NTeTmsDev\eTMSMaster.Master:line 36
+   at ASP.etmsmaster_master.__BuildControlTree(etmsmaster_master __ctrl) in d:\E\eTMS Softwares\NTeTmsDev\eTMSMaster.Master:line 1
+   at ASP.etmsmaster_master.FrameworkInitialize() in d:\E\eTMS Softwares\NTeTmsDev\eTMSMaster.Master.cs:line 912308
+   at System.Web.UI.UserControl.InitializeAsUserControlInternal()
+   at System.Web.UI.MasterPage.CreateMaster(TemplateControl owner, HttpContext context, VirtualPath masterPageFile, IDictionary contentTemplateCollection)
+   at System.Web.UI.Page.get_Master()
+   at System.Web.UI.Page.ApplyMasterPage()
+   at System.Web.UI.Page.PerformPreInit()
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+Exception Type: System.Web.HttpUnhandledException
+Exception: Exception of type 'System.Web.HttpUnhandledException' was thrown.
+Source: Application Page Error
+Stack Trace: 
+   at System.Web.UI.Page.HandleError(Exception e)
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest()
+   at System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   at System.Web.UI.Page.ProcessRequest(HttpContext context)
+   at ASP.newbillingreports_aspx.ProcessRequest(HttpContext context) in c:\Users\delta\AppData\Local\Temp\Temporary ASP.NET Files\root\f8abfd35\2605e86d\App_Web_newbillingreports.aspx.cdcab7d2.dlu50z--.0.cs:line 0
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+TargetSite: Boolean HandleError(System.Exception)
+
+********** 6/14/2019 2:51:55 AM **********
+Inner Exception Type: System.IO.FileNotFoundException
+Inner Exception: Could not load file or assembly 'Microsoft.ReportViewer.Common, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' or one of its dependencies. The system cannot find the file specified.
+Inner Source: Microsoft.ReportViewer.WebForms
+Inner Stack Trace: 
+   at Microsoft.Reporting.WebForms.LocalReport..ctor()
+   at Microsoft.Reporting.WebForms.LocalModeSession..ctor()
+   at Microsoft.Reporting.WebForms.ReportHierarchy..ctor(ServerReport serverReport)
+   at Microsoft.Reporting.WebForms.ReportViewer.CreateReportHierarchy()
+   at Microsoft.Reporting.WebForms.ReportViewer..ctor()
+   at ASP.newbillingsummaryreports_aspx.__BuildControlReportViewer1() in d:\E\eTMS Softwares\NTeTmsDev\NewBillingSummaryReports.aspx:line 135
+   at ASP.newbillingsummaryreports_aspx.__BuildControlContent2(Control __ctrl) in d:\E\eTMS Softwares\NTeTmsDev\NewBillingSummaryReports.aspx:line 11
+   at System.Web.UI.CompiledTemplateBuilder.InstantiateIn(Control container)
+   at ASP.etmsmaster_master.__BuildControlContentPlaceHolder1() in d:\E\eTMS Softwares\NTeTmsDev\eTMSMaster.Master:line 96
+   at ASP.etmsmaster_master.__BuildControlform1() in d:\E\eTMS Softwares\NTeTmsDev\eTMSMaster.Master:line 36
+   at ASP.etmsmaster_master.__BuildControlTree(etmsmaster_master __ctrl) in d:\E\eTMS Softwares\NTeTmsDev\eTMSMaster.Master:line 1
+   at ASP.etmsmaster_master.FrameworkInitialize() in d:\E\eTMS Softwares\NTeTmsDev\eTMSMaster.Master.cs:line 912308
+   at System.Web.UI.UserControl.InitializeAsUserControlInternal()
+   at System.Web.UI.MasterPage.CreateMaster(TemplateControl owner, HttpContext context, VirtualPath masterPageFile, IDictionary contentTemplateCollection)
+   at System.Web.UI.Page.get_Master()
+   at System.Web.UI.Page.ApplyMasterPage()
+   at System.Web.UI.Page.PerformPreInit()
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+Exception Type: System.Web.HttpUnhandledException
+Exception: Exception of type 'System.Web.HttpUnhandledException' was thrown.
+Source: Application Page Error
+Stack Trace: 
+   at System.Web.UI.Page.HandleError(Exception e)
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest()
+   at System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   at System.Web.UI.Page.ProcessRequest(HttpContext context)
+   at ASP.newbillingsummaryreports_aspx.ProcessRequest(HttpContext context) in c:\Users\delta\AppData\Local\Temp\Temporary ASP.NET Files\root\f8abfd35\2605e86d\App_Web_newbillingsummaryreports.aspx.cdcab7d2.ayfkigpo.0.cs:line 0
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+TargetSite: Boolean HandleError(System.Exception)
+

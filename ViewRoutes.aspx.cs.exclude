@@ -1,0 +1,909 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Collections;
+
+public partial class ViewRoutes : basepage
+{
+    DataClasses1DataContext tmscontext = new DataClasses1DataContext();
+    static ArrayList arrlistRouteID = new ArrayList();
+    static ArrayList arrlistEmployeeid = new ArrayList();
+    static ArrayList arrlistParentGrdRowIndex = new ArrayList();
+    public string _empIdName
+    {
+        get
+        {
+            return (string)ViewState["_empIdName"];
+        }
+
+        set
+        {
+            ViewState["_empIdName"] = value;
+        }
+    }
+
+    public string _routeID
+    {
+        get
+        {
+            return (string)ViewState["_routeID"];
+        }
+
+        set
+        {
+            ViewState["_routeID"] = value;
+        }
+    }
+
+    public int _parentRowIndex
+    {
+        get
+        {
+            return (int)ViewState["_parentRowIndex"];
+        }
+
+        set
+        {
+            ViewState["_parentRowIndex"] = value;
+        }
+    }
+
+    string gvParentSortExpr = String.Empty;
+
+    public string _strStartdate
+    {
+        get
+        {
+            return (string)ViewState["_strStartdate"];
+        }
+
+        set
+        {
+            ViewState["_strStartdate"] = value;
+        }
+    }
+
+    public string _strEndDate
+    {
+        get
+        {
+            return (string)ViewState["_strEndDate"];
+        }
+
+        set
+        {
+            ViewState["_strEndDate"] = value;
+        }
+    }
+
+    public string _strFacilityID
+    {
+        get
+        {
+            return (string)ViewState["_strFacilityID"];
+        }
+
+        set
+        {
+            ViewState["_strFacilityID"] = value;
+        }
+    }
+
+    public string _strTripType
+    {
+        get
+        {
+            return (string)ViewState["_strTripType"];
+        }
+
+        set
+        {
+            ViewState["_strTripType"] = value;
+        }
+    }
+
+    public string _strShifttimes
+    {
+        get
+        {
+            return (string)ViewState["_strShifttimes"];
+        }
+
+        set
+        {
+            ViewState["_strShifttimes"] = value;
+        }
+    }
+
+    private string gvSortDir
+    {
+
+        get { return ViewState["SortDirection"] as string ?? "ASC"; }
+
+        set { ViewState["SortDirection"] = value; }
+
+    }
+
+    private string GetSortDirection()
+    {
+        switch (gvSortDir)
+        {
+            case "ASC":
+                gvSortDir = "DESC";
+                break;
+            case "DESC":
+                gvSortDir = "ASC";
+                break;
+        }
+        return gvSortDir;
+    }
+
+    private string getSortDirectionString(SortDirection sortDireciton)
+    {
+        string newSortDirection = String.Empty;
+        if (sortDireciton == SortDirection.Ascending)
+        {
+            newSortDirection = "ASC";
+        }
+        else
+        {
+            newSortDirection = "DESC";
+        }
+
+        return newSortDirection;
+    }
+
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        try
+        {
+            if (!IsPostBack)
+            {
+                txtStartDate.Text = DateTime.Now.Date.ToString("MM/dd/yyyy");
+                txtEndDate.Text = DateTime.Now.Date.ToString("MM/dd/yyyy");
+                BndFacilityDropdown();
+                BndShiftTimeListBx();
+
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+
+            throw (ex);
+        }
+    }
+
+
+    public void BndFacilityDropdown()
+    {
+        try
+        {
+            ddlFacility.Items.Clear();
+            ListItem liv = new ListItem("Select Facility", "0");
+            ddlFacility.Items.Add(liv);
+            ddlFacility.DataSource = tmscontext.SelectFacility(MyApplicationSession._UserID, MyApplicationSession._ISAdmin);
+            ddlFacility.DataTextField = "facilityName";
+            ddlFacility.DataValueField = "Id";
+            ddlFacility.DataBind();
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+
+            throw (ex);
+        }
+    }
+
+    public void BndShiftTimeListBx()
+    {
+        try
+        {
+            int facid = Convert.ToInt32(ddlFacility.SelectedValue.ToString());
+            string type = rdoTripType.SelectedValue.ToString();
+            lstShift.Items.Clear();
+            ListItem list = new ListItem("-Select-", "0");
+            lstShift.Items.Add(list);
+            lstShift.DataSource = tmscontext.GetShiftByFacilityType(facid, type);
+            lstShift.DataTextField = "shiftTime";
+            lstShift.DataValueField = "shiftTime";
+            lstShift.DataBind();
+            lstShift.SelectedIndex = 0;
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+            throw (ex);
+        }
+    }
+
+    public void BndMainGrid()
+    {
+        try
+        {
+            _strStartdate = txtStartDate.Text;
+            _strEndDate = txtEndDate.Text;
+            _strFacilityID = ddlFacility.SelectedValue;
+            _strTripType = rdoTripType.SelectedValue;
+            _strShifttimes = string.Empty;
+            if (lstShift.SelectedIndex >= 0)
+            {
+                for (int i = 0; i < lstShift.Items.Count; i++)
+                {
+                    if (lstShift.Items[i].Selected)
+                    {
+                        _strShifttimes += lstShift.Items[i].Text.Trim() + ",";
+                    }
+
+                }
+            }
+            _strShifttimes = _strShifttimes.Remove(_strShifttimes.Length - 1, 1);
+            grdViewRouteParent.DataSource = tmscontext.GetRoutes(_strStartdate, _strEndDate, _strFacilityID, _strTripType, _strShifttimes);
+            grdViewRouteParent.DataBind();
+            if (grdViewRouteParent.Rows.Count > 0)
+            {
+                lbtnPrintHtml.Visible = true;
+                lbtnPrintExcel.Visible = true;
+                DvViewStatistics.Visible = true;
+                for (int i = 0; i < grdViewRouteParent.Rows.Count; i++)
+                {
+                    //string lbRouteID = ((Label)grdViewRouteParent.Rows[i].FindControl("lblRouteID")).Text.ToString();
+                    string lbRouteID = grdViewRouteParent.DataKeys[i]["RouteID"].ToString();
+
+                    GridView grdViewRouteChild = (GridView)grdViewRouteParent.Rows[i].FindControl("grdViewRouteChild");
+                    grdViewRouteChild.DataSource = tmscontext.GetRoutesDetails(lbRouteID);
+                    grdViewRouteChild.DataBind();
+
+                    DropDownList ddlVendor = (DropDownList)grdViewRouteParent.Rows[i].FindControl("ddlVendor");
+                    ddlVendor.Items.Clear();
+                    ListItem liVendor = new ListItem("--Select--", "0");
+                    ddlVendor.Items.Add(liVendor);
+                    ddlVendor.DataSource = tmscontext.GetVendorByFacility(Convert.ToInt32(_strFacilityID));
+                    ddlVendor.DataTextField = "vendorName";
+                    ddlVendor.DataValueField = "Id";
+                    ddlVendor.DataBind();
+                    string SelectedVendor = tmscontext.GetSelectedVendorSticker(lbRouteID).ElementAtOrDefault(0).vendorId.ToString();
+                    ddlVendor.SelectedIndex = ddlVendor.Items.IndexOf(ddlVendor.Items.FindByValue(SelectedVendor.ToString()));
+
+                    TextBox txtCabID = (TextBox)grdViewRouteParent.Rows[i].FindControl("txtCabID");
+                    string SelectedSticker = tmscontext.GetSelectedVendorSticker(lbRouteID).ElementAtOrDefault(0).vehicleId.ToString();
+                    txtCabID.Text = SelectedSticker;
+                }
+            }
+            else
+            {
+                lbtnPrintHtml.Visible = false;
+                lbtnPrintExcel.Visible = false;
+                DvViewStatistics.Visible = false;
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+
+            throw (ex);
+        }
+    }
+
+    public void BndDvViewStatistics()
+    {
+        try
+        {
+            DvViewStatistics.DataSource = tmscontext.GetRoutesStatistics(_strStartdate, _strEndDate, _strFacilityID, _strTripType, _strShifttimes);
+            DvViewStatistics.DataBind();
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+
+            throw (ex);
+        }
+    }
+
+    protected void btnSubmit_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            BndMainGrid();
+            BndDvViewStatistics();
+            mvViewRouteParent.ActiveViewIndex = 0;
+            
+            lbtnPrintHtml.NavigateUrl = "~/PrintTripsheet.aspx?Startdate=" + Server.HtmlEncode(_strStartdate) + "&EndDate=" + Server.HtmlEncode(_strEndDate) + "&FacilityID=" + Server.HtmlEncode(_strFacilityID) + "&TripType=" + Server.HtmlEncode(_strTripType) + "&Shifttimes=" + Server.HtmlEncode(_strShifttimes);
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+
+            throw (ex);
+        }
+    }
+
+    protected void grdViewRouteParent_RowEditing(object sender, GridViewEditEventArgs e)
+    {
+        try
+        {
+            grdViewRouteParent.EditIndex = e.NewEditIndex;
+            BndMainGrid();
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+
+            throw (ex);
+        }
+    }
+
+    protected void grdViewRouteParent_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+    {
+        try
+        {
+            grdViewRouteParent.EditIndex = -1;
+            BndMainGrid();
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+
+            throw (ex);
+        }
+    }
+
+
+    protected void grdViewRouteParent_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        try
+        {
+            string RouteIDs = string.Empty;
+
+            if (e.CommandName == "ShowDetailPanel")
+            {
+                GridViewRow gvr = (GridViewRow)((ImageButton)e.CommandSource).NamingContainer;
+                int rowindex = gvr.RowIndex;
+                GridView grdViewRouteChild = (GridView)grdViewRouteParent.Rows[rowindex].FindControl("grdViewRouteChild");
+                if (grdViewRouteChild.Visible == true)
+                {
+                    grdViewRouteChild.Visible = false;
+                }
+                else
+                {
+                    grdViewRouteChild.Visible = true;
+                }
+                ImageButton ibViewRouteID = (ImageButton)grdViewRouteParent.Rows[rowindex].FindControl("ibViewRouteID");
+
+                if (ibViewRouteID.ImageUrl == "~/images/plus.gif")
+                {
+                    ibViewRouteID.ImageUrl = "~/images/minus.gif";
+                    ibViewRouteID.ToolTip = "To Collapse the Route Detail";
+                }
+                else
+                {
+                    ibViewRouteID.ImageUrl = "~/images/plus.gif";
+                    ibViewRouteID.ToolTip = "To Expand the Route Detail";
+                }
+            }
+
+            if (e.CommandName == "Merge")
+            {
+
+                GridView grdViewRouteChild = (GridView)sender;
+                foreach (GridViewRow i in grdViewRouteChild.Rows)
+                {
+                    CheckBox cb = (CheckBox)i.FindControl("chkBxRouteID");
+                    if (cb != null && cb.Checked)
+                    {
+                        Label lblRouteID = (Label)i.FindControl("lblRouteID");
+                        //string routeid = grdViewRouteChild.DataKeys[i].Value.ToString();
+                        RouteIDs = RouteIDs + lblRouteID.Text.Trim() + ",";
+                    }
+                }
+                Label lblParentErrorMsg = (Label)grdViewRouteParent.FooterRow.FindControl("lblParentErrorMsg");
+                lblParentErrorMsg.Text = string.Empty;
+                if (RouteIDs != string.Empty)
+                {
+                    RouteIDs = RouteIDs.Remove(RouteIDs.Length - 1, 1);
+                    tmscontext.MergeRoute(RouteIDs);
+                    BndMainGrid();
+                }
+                else
+                {
+                    lblParentErrorMsg.Text = "** Select Atleast one RouteID ! **";
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+
+            throw (ex);
+        }
+    }
+
+
+    protected void grdViewRouteParent_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+
+    }
+
+    protected void grdViewRouteParent_RowDeleting(object sender, GridViewDeleteEventArgs e)
+    {
+        try
+        {
+            route r = new route();
+            r.Id = grdViewRouteParent.DataKeys[e.RowIndex].Value.ToString();
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+
+            throw (ex);
+        }
+    }
+
+    protected void grdViewRouteChild_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        try
+        {
+            GridView grdChildTemp = (GridView)sender;
+            _parentRowIndex = ((GridViewRow)(grdChildTemp.NamingContainer)).RowIndex;
+            _routeID = grdChildTemp.DataKeys[0].Values[0].ToString();
+            string EmpIDs = string.Empty;
+            if (e.CommandName == "UpdateStopNo")
+            {
+
+                foreach (GridViewRow i in grdChildTemp.Rows)
+                {
+                    string strEmployeeID = grdChildTemp.DataKeys[i.RowIndex].Values[1].ToString();
+                    DateTime strShiftdate = Convert.ToDateTime(grdChildTemp.DataKeys[i.RowIndex].Values[2]);
+                    Int32 intStopNo = Convert.ToInt32(((TextBox)grdChildTemp.Rows[i.RowIndex].FindControl("txtstopNo")).Text);
+                    string strETAhh = ((TextBox)grdChildTemp.Rows[i.RowIndex].FindControl("txtETAhh")).Text;
+                    string strETAmm = ((TextBox)grdChildTemp.Rows[i.RowIndex].FindControl("txtETAmm")).Text;
+                    tmscontext.UpdateRoute(_routeID, strEmployeeID, strShiftdate, intStopNo, strETAhh, strETAmm);
+
+                }
+                grdChildTemp.DataSource = tmscontext.GetRoutesDetails(_routeID);
+                grdChildTemp.DataBind();
+                //foreach (GridViewRow i in grdChildTemp.Rows)
+                //{
+                //    grdChildTemp.Rows[Convert.ToInt32(i.RowIndex)].BackColor = System.Drawing.Color.SkyBlue;
+                //    ((TextBox)grdChildTemp.Rows[Convert.ToInt32(i.RowIndex)].FindControl("txtETAhh")).Enabled = false;
+                //    ((TextBox)grdChildTemp.Rows[Convert.ToInt32(i.RowIndex)].FindControl("txtETAmm")).Enabled = false;
+                //    ((TextBox)grdChildTemp.Rows[Convert.ToInt32(i.RowIndex)].FindControl("txtstopNo")).Enabled = false;
+                //    ((CheckBox)grdChildTemp.Rows[Convert.ToInt32(i.RowIndex)].FindControl("chkBxEmployeeID")).Enabled = false;
+                //    ((ImageButton)grdChildTemp.Rows[Convert.ToInt32(i.RowIndex)].FindControl("ibCutEmployee")).Enabled = false;
+                //    ((ImageButton)grdChildTemp.Rows[Convert.ToInt32(i.RowIndex)].FindControl("ibPasteEmployee")).Enabled = false;
+                //    ((ImageButton)grdChildTemp.Rows[Convert.ToInt32(i.RowIndex)].FindControl("ibDeleteEmployee")).Enabled = false;
+                //    ((ImageButton)grdChildTemp.FooterRow.FindControl("ibUpdateStopNo")).Enabled = false;
+                //    ((ImageButton)grdChildTemp.FooterRow.FindControl("ImbtSplit")).Enabled = false;
+
+                //}
+            }
+
+            if (e.CommandName == "Paste")
+            {
+                try
+                {
+                    string oldRouteID = string.Empty;
+                    string oldEmployeeID = string.Empty;
+                    string OldparentGrdRowIndex = string.Empty;
+                    string NewRouteID = _routeID;
+                    Int32 NewStopNo = Convert.ToInt32(((TextBox)grdChildTemp.Rows[Convert.ToInt32(e.CommandArgument)].FindControl("txtstopNo")).Text);
+
+                    for (int i = 0; i < arrlistRouteID.Count; i++)
+                    {
+                        oldRouteID = arrlistRouteID[i].ToString() + "," + oldRouteID;
+                    }
+
+                    for (int i = 0; i < arrlistEmployeeid.Count; i++)
+                    {
+                        oldEmployeeID = arrlistEmployeeid[i].ToString() + "," + oldEmployeeID;
+                    }
+
+                    if (oldRouteID != string.Empty && oldEmployeeID != string.Empty)
+                    {
+                        tmscontext.UpdateCutPaste(oldRouteID, oldEmployeeID, NewRouteID, NewStopNo);
+                        grdChildTemp.DataSource = tmscontext.GetRoutesDetails(NewRouteID);
+                        grdChildTemp.DataBind();
+                    }
+                    for (int i = 0; i < arrlistParentGrdRowIndex.Count; i++)
+                    {
+                        OldparentGrdRowIndex = arrlistParentGrdRowIndex[i].ToString();
+                        GridView OldChildGridView = (GridView)grdViewRouteParent.Rows[Convert.ToInt32(OldparentGrdRowIndex)].FindControl("grdViewRouteChild");
+                        OldChildGridView.DataSource = tmscontext.GetRoutesDetails(arrlistRouteID[i].ToString());
+                        OldChildGridView.DataBind();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ex.Data["ExtraInfo"] = "First copy then paste";
+                    throw ex;
+                }
+                finally
+                {
+                    arrlistRouteID.Clear();
+                    arrlistEmployeeid.Clear();
+                    arrlistParentGrdRowIndex.Clear();
+
+                }
+            }
+
+            if (e.CommandName == "Split")
+            {
+                foreach (GridViewRow i in grdChildTemp.Rows)
+                {
+                    CheckBox cb = (CheckBox)i.FindControl("chkBxEmployeeID");
+                    if (cb != null && cb.Checked)
+                    {
+                        string lblEmpID = grdChildTemp.DataKeys[i.RowIndex].Values[1].ToString();
+                        EmpIDs = EmpIDs + lblEmpID.Trim() + ",";
+                    }
+                }
+
+                Label lblChildErrorMsg = (Label)grdChildTemp.FooterRow.FindControl("lblChildErrorMsg");
+                lblChildErrorMsg.Text = string.Empty;
+                if (EmpIDs != string.Empty)
+                {
+                    EmpIDs = EmpIDs.Remove(EmpIDs.Length - 1, 1);
+                    tmscontext.SplitRoute(_routeID, EmpIDs);
+                    BndMainGrid();
+                }
+                else
+                {
+                    lblChildErrorMsg.Text = "** Select Atleast one employee ! **";
+                }
+            }
+
+            if (e.CommandName == "InsertEmployee")
+            {
+                Panel1.Style.Add(HtmlTextWriterStyle.Visibility, "visible");
+                GvEmployee.Visible = false;
+                lblSearch.Visible = false;
+                ddlStopNO.Items.Clear();
+                _empIdName = string.Empty;
+                BndManGrid();
+                ListItem li = new ListItem("Select Stop No", "0");
+                string val = string.Empty;
+                ddlStopNO.Items.Add(li);
+                for (int i = 0; i <= grdChildTemp.Rows.Count; i++)
+                {
+                    val = (i + 1).ToString();
+
+                    ddlStopNO.Items.Add(val.ToString());
+
+                }
+
+                ModalPopupExtender.Show();
+                txtEmpIdName.Focus();
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+
+            throw (ex);
+        }
+    }
+
+    protected void btnEmpSearch_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            _empIdName = txtEmpIdName.Text;
+            txtEmpIdName.Text = string.Empty;
+            BndManGrid();
+            ModalPopupExtender.Show();
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+
+            throw (ex);
+        }
+    }
+
+    public void BndManGrid()
+    {
+        try
+        {
+            GvEmployee.DataSource = tmscontext.EmpSearch(txtEmpIdName.Text, MyApplicationSession._LocationId,MyApplicationSession._ISAdmin);
+            GvEmployee.DataBind();
+            if (GvEmployee.Rows.Count < 1)
+            {
+
+                lblSearch.Visible = true;
+                lblSearch.Text = "No Record Found!!!";
+                txtEmpIdName.Focus();
+                GvEmployee.Visible = false;
+            }
+            else
+            {
+                lblSearch.Visible = false;
+                txtEmpIdName.Text = string.Empty;
+                GvEmployee.Visible = true;
+                txtEmpIdName.Focus();
+            }
+
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+
+            throw (ex);
+        }
+    }
+
+    protected void GvEmployee_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        try
+        {
+            GvEmployee.PageIndex = e.NewPageIndex;
+            BndManGrid();
+            ModalPopupExtender.Show();
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+
+            throw (ex);
+        }
+    }
+
+    protected void GvEmployee_SelectedIndexChanging(object sender, GridViewSelectEventArgs e)
+    {
+        try
+        {
+            int empId = Convert.ToInt32(GvEmployee.DataKeys[e.NewSelectedIndex].Value.ToString());
+            int stopNo = Convert.ToInt32(ddlStopNO.SelectedValue);
+            string result = tmscontext.AddEmpToRoute(empId, stopNo, _routeID).ElementAtOrDefault(0).result.Value.ToString();
+            if (result.Equals("1"))
+            {
+                GridView grdViewRouteChild = (GridView)grdViewRouteParent.Rows[_parentRowIndex].FindControl("grdViewRouteChild");
+                grdViewRouteChild.DataSource = tmscontext.GetRoutesDetails(_routeID);
+                grdViewRouteChild.DataBind();
+            }
+            else
+            {
+                lblSearch.Text = "Employee Already Exists In Route";
+                lblSearch.Visible = true;
+                ModalPopupExtender.Show();
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+
+            throw (ex);
+        }
+    }
+
+
+
+    protected void lbtnClose_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            ModalPopupExtender.Hide();
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+
+            throw (ex);
+        }
+    }
+
+
+    protected void grdViewRouteChild_RowEditing(object sender, GridViewEditEventArgs e)
+    {
+
+    }
+
+    protected void grdViewRouteParent_Sorting(object sender, GridViewSortEventArgs e)
+    {
+
+    }
+
+    protected void grdViewRouteChild_SelectedIndexChanging(object sender, GridViewSelectEventArgs e)
+    {
+        try
+        {
+            GridView grdChildTemp = (GridView)sender;
+            _parentRowIndex = ((GridViewRow)(grdChildTemp.NamingContainer)).RowIndex;
+            _routeID = grdChildTemp.DataKeys[0].Values[0].ToString();
+            string strEmployeeID = grdChildTemp.DataKeys[Convert.ToInt32(e.NewSelectedIndex)].Values[1].ToString();
+
+            arrlistRouteID.Add(_routeID);
+            arrlistEmployeeid.Add(strEmployeeID);
+            arrlistParentGrdRowIndex.Add(_parentRowIndex);
+            grdChildTemp.Rows[Convert.ToInt32(e.NewSelectedIndex)].BackColor = System.Drawing.Color.Salmon;
+            //grdChildTemp.Rows[Convert.ToInt32(e.NewSelectedIndex)].Style.Add("background-color", "#5D7B9D");
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+
+            throw (ex);
+        }
+    }
+
+    protected void grdViewRouteChild_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+    }
+
+    protected void grdViewRouteChild_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void grdViewRouteParent_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        try
+        {
+            grdViewRouteParent.PageIndex = e.NewPageIndex;
+            BndMainGrid();
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+
+            throw (ex);
+        }
+    }
+
+    protected void ddlFacility_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            BndShiftTimeListBx();
+            DvViewStatistics.Visible = false;
+            lbtnPrintHtml.Visible = false;
+            lbtnPrintExcel.Visible = false;
+            mvViewRouteParent.ActiveViewIndex = -1;
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+
+            throw (ex);
+        }
+    }
+
+
+    public void CheckValid_AssignSticker(Object source, ServerValidateEventArgs args)
+    {
+        try
+        {
+            bool checkstate = false;
+
+            foreach (GridViewRow i in grdViewRouteParent.Rows)
+            {
+                DropDownList cb = (DropDownList)i.FindControl("chkBxEmpId");
+            }
+            args.IsValid = checkstate;
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+
+            throw (ex);
+        }
+    }
+        
+    protected void lbtnPrintExcel_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            Server.Transfer("PrintTripsheetToExcel.aspx");
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+
+            throw (ex);
+        }
+    }
+
+    protected void rdoTripType_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            BndShiftTimeListBx();
+            DvViewStatistics.Visible = false;
+            lbtnPrintHtml.Visible = false;
+            lbtnPrintExcel.Visible = false;
+            mvViewRouteParent.ActiveViewIndex = -1;
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+            throw (ex);
+        }
+    }
+
+    protected void ibDeleteRoute_Click(object sender, ImageClickEventArgs e)
+    {
+        GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
+        int index = gvRow.RowIndex;
+
+        //string routeID = ((Label)grdViewRouteParent.Rows[index].FindControl("lblRouteID")).Text.ToString();
+        string routeID = grdViewRouteParent.DataKeys[index]["RouteID"].ToString();
+        var result = tmscontext.DeleteRoutes("", 0, "", "", routeID, 0, MyApplicationSession._UserID).ElementAtOrDefault(0).result.Value.ToString();
+        Label lblParentErrorMsg = (Label)grdViewRouteParent.FooterRow.FindControl("lblParentErrorMsg");
+        if (result.Equals("1"))
+        {
+            BndMainGrid();
+            lblParentErrorMsg.Text = "Route deleted Successfully.";
+
+        }
+        else
+        {
+            lblParentErrorMsg.Text = "An error occurred while deleting the route.";
+        }
+    }
+    protected void ibDeleteEmployee_Click(object sender, ImageClickEventArgs e)
+    {
+        ImageButton ibDeleteEmployee = sender as ImageButton;
+        GridViewRow gvRow = (GridViewRow)ibDeleteEmployee.NamingContainer;
+        int index = gvRow.RowIndex;
+        GridView grdViewRouteChild = (GridView)ibDeleteEmployee.NamingContainer.NamingContainer;
+        int parentRowIndex = ((GridViewRow)(grdViewRouteChild.NamingContainer)).RowIndex;
+        string routeID = grdViewRouteParent.DataKeys[parentRowIndex]["RouteID"].ToString();
+        int empID = Convert.ToInt32(grdViewRouteChild.DataKeys[index]["id"].ToString());
+
+        var result = tmscontext.DeleteRoutes("", 0, "", "", routeID, empID, MyApplicationSession._UserID).ElementAtOrDefault(0).result.Value.ToString();
+        Label lblParentErrorMsg = (Label)grdViewRouteParent.FooterRow.FindControl("lblParentErrorMsg");
+        if (result.Equals("1"))
+        {
+            grdViewRouteChild.DataSource = tmscontext.GetRoutesDetails(routeID);
+            grdViewRouteChild.DataBind();
+            lblParentErrorMsg.Text = "Employee deleted Successfully.";
+        }
+        else
+        {
+            lblParentErrorMsg.Text = "An error occurred while deleting the employee.";
+        }
+    }
+    protected void ibAssignSticker_Click(object sender, ImageClickEventArgs e)
+    {
+        for (int i = 0; i < grdViewRouteParent.Rows.Count; i++)                
+        {
+            DropDownList ddlVendor = (DropDownList)grdViewRouteParent.Rows[i].FindControl("ddlVendor");
+            TextBox txtCabID = (TextBox)grdViewRouteParent.Rows[i].FindControl("txtCabID");
+            //Label lblRouteID = (Label)grdViewRouteParent.Rows[i].FindControl("lblRouteID");
+            string routeID = grdViewRouteParent.DataKeys[i]["RouteID"].ToString();
+
+            if ((Convert.ToInt32(ddlVendor.SelectedValue) != 0))
+            {
+                tmscontext.AssignStickerToRoutes(routeID, Convert.ToInt32(ddlVendor.SelectedValue), Server.HtmlEncode(txtCabID.Text));
+
+            }
+        }
+        BndMainGrid();
+    }
+}
+

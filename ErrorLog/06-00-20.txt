@@ -1,0 +1,30 @@
+********** 1/6/2020 12:30:02 PM **********
+Inner Exception Type: System.ArgumentOutOfRangeException
+Inner Exception: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+Inner Source: mscorlib
+Inner Stack Trace: 
+   at System.Collections.ArrayList.get_Item(Int32 index)
+   at System.Collections.Specialized.OrderedDictionary.get_Item(Int32 index)
+   at EmpScheduler.lnkBtnShift_Click(Object sender, EventArgs e) in d:\E\eTMS Softwares\NTeTmsDev\EmpScheduler.aspx.cs:line 1285
+   at System.Web.UI.WebControls.LinkButton.OnClick(EventArgs e)
+   at System.Web.UI.WebControls.LinkButton.RaisePostBackEvent(String eventArgument)
+   at System.Web.UI.WebControls.LinkButton.System.Web.UI.IPostBackEventHandler.RaisePostBackEvent(String eventArgument)
+   at System.Web.UI.Page.RaisePostBackEvent(IPostBackEventHandler sourceControl, String eventArgument)
+   at System.Web.UI.Page.RaisePostBackEvent(NameValueCollection postData)
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+Exception Type: System.Web.HttpUnhandledException
+Exception: Exception of type 'System.Web.HttpUnhandledException' was thrown.
+Source: Application Page Error
+Stack Trace: 
+   at System.Web.UI.Page.HandleError(Exception e)
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest()
+   at System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   at System.Web.UI.Page.ProcessRequest(HttpContext context)
+   at ASP.empscheduler_aspx.ProcessRequest(HttpContext context) in c:\Users\delta\AppData\Local\Temp\Temporary ASP.NET Files\root\f8abfd35\2605e86d\App_Web_qmoqlp81.10.cs:line 0
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+TargetSite: Boolean HandleError(System.Exception)
+

@@ -1,0 +1,3 @@
+employeeID,LoginDate,LoginTime,LoginFacility,LogoutTime,LogoutFacility
+11111,02/20/2012,1130,M,2030,M
+11112,02/20/2012,730,E,1630,E

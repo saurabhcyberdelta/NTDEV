@@ -1,0 +1,116 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="eTMSMaster.Master.cs" Inherits="eTMSMaster" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+    <title>e-Transport Management System</title>
+    <link href="StyleSheets/DataList.css" rel="stylesheet" type="text/css" />
+    <link href="StyleSheets/DetailsView.css" rel="stylesheet" type="text/css" />
+    <link href="StyleSheets/GridView.css" rel="stylesheet" type="text/css" />
+    <link href="StyleSheets/Menu.css" rel="stylesheet" type="text/css" />   
+    <link href="StyleSheets/Text-gradient.css" rel="stylesheet" type="text/css" />
+    <link href="StyleSheets/TMS.css" rel="stylesheet" type="text/css" />
+    <link href="StyleSheets/Window.css" rel="stylesheet" type="text/css" />
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico"/>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <style type="text/css">
+        .style3
+        {
+            width: 100%;
+        }
+        .style4
+        {
+            font-size: x-large;
+            color: #FFFFFF;
+            font-weight: bold;
+        }
+        .style6
+        {
+            font-size: small;
+        }
+    </style>
+</head>
+<body style="padding: 0px; margin: 0px">
+    <form id="form1" runat="server">
+    <div>
+        <asp:ScriptManager ID="ScriptManager1" runat="server" />
+        <table cellspacing="0" class="style3">
+            <tr>
+                <td colspan="2">
+                    <table cellspacing="0" class="tableBorber" width="100%">
+                        <tr>
+                            <td class="bg-menu-Logo" width="15%" align="center" rowspan="2">
+                                <img alt="logo" src="images/logo.png" height="44px" />
+                            </td>
+                            <td class="bg-menu-main">
+                                e-Transport Management System
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="bg-menu-main">
+                                <asp:Label ID="lblCuurDate" runat="server" ForeColor="White"
+                                    Font-Bold="True" CssClass="style6"></asp:Label></td>
+                        </tr>
+                        <tr>
+                            <td class="bg-menu-TD">
+                            </td>
+                            <td class="bg-menu-TD">
+                                Logged in as:
+                                <asp:Label ID="lblUserName" runat="server" Style="font-weight: 700"></asp:Label>
+                                &nbsp; &nbsp;<asp:LinkButton ID="lbtnHome" runat="server" CausesValidation="False"
+                                    PostBackUrl="~/Default.aspx" CssClass="linkButton">Home</asp:LinkButton>&nbsp;|
+                                <asp:HyperLink ID="HyperLink1" runat="server" CssClass="linkButton" NavigateUrl="~/FAQs.doc"
+                                    Target="_blank">FAQs</asp:HyperLink>&nbsp;|
+                                    
+                                <asp:HyperLink ID="HyperLink2" runat="server" CssClass="linkButton" NavigateUrl="~/Manual.ppt"
+                                    Target="_blank">User Manual</asp:HyperLink>&nbsp;|
+                                <asp:LinkButton ID="lbLogOut" runat="server" 
+                        onclick="lbLogOut_Click" CssClass="linkButton">Logout</asp:LinkButton>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" width="15%">
+                    <asp:Menu ID="Menu1" DataSourceID="xmlDataSource" runat="server" DynamicHorizontalOffset="2"
+                        StaticSubMenuIndent="10px" StaticDisplayLevels="1" Width="100%">
+                        <DataBindings>
+                            <asp:MenuItemBinding DataMember="MenuItem" NavigateUrlField="NavigateUrl" TextField="Text"
+                                ToolTipField="ToolTip" />
+                        </DataBindings>
+                        <StaticMenuStyle CssClass="primaryStaticMenu" />
+                        <StaticMenuItemStyle CssClass="primaryStaticMenuItem" />
+                        <StaticHoverStyle CssClass="primaryStaticHover" />
+                        <DynamicMenuStyle CssClass="primaryDynamicMenu" />
+                        <DynamicMenuItemStyle CssClass="primaryDynamicMenuItem" />
+                        <DynamicHoverStyle CssClass="primaryDynamicHover" />
+                    </asp:Menu>
+                </td>
+                <td>
+                    <table width="100%">
+                        <tr>
+                            <td width="100%">
+                                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                                </asp:ContentPlaceHolder>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td width="15%">
+                    &nbsp;
+                </td>
+                <td>
+                    <asp:XmlDataSource ID="xmlDataSource" TransformFile="~/TransformXSLT.xsl" XPath="MenuItems/MenuItem"
+                        runat="server" EnableCaching="False" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    </form>
+</body>
+</html>

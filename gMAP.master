@@ -1,0 +1,160 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="gMAP.master.cs" Inherits="gMAP" %>
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+    <title>Generate Routes Master</title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <link href="StyleSheets/DataList.css" rel="stylesheet" type="text/css" />
+    <link href="StyleSheets/DetailsView.css" rel="stylesheet" type="text/css" />
+    <link href="StyleSheets/GridView.css" rel="stylesheet" type="text/css" />
+    <link href="StyleSheets/Menu.css" rel="stylesheet" type="text/css" />
+    <link href="StyleSheets/Text-gradient.css" rel="stylesheet" type="text/css" />
+    <link href="StyleSheets/TMS.css" rel="stylesheet" type="text/css" />
+    <link href="StyleSheets/Window.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .style3
+        {
+            width: 100%;
+        }
+        .style4
+        {
+            font-size: x-large;
+            color: #FFFFFF;
+            font-weight: bold;
+        }
+        .style6
+        {
+            font-size: small;
+        }
+    </style>
+</head>
+<body onload="initialize()" style="margin: 0px">
+    <form id="form1" runat="server">
+    <div>
+        <asp:ScriptManager ID="ScriptManager1" runat="server" />
+        <table align="center" width="100%" cellspacing="0" cellpadding="0" border="0">
+            <tr>
+                <td class="bg-menu-Logo" width="15%" align="center" rowspan="2">
+                    <img alt="logo" src="images/logo.png" height="44px" />
+                </td>
+                <td class="bg-menu-main">
+                    e-Transport Management System
+                </td>
+            </tr>
+            <tr>
+                <td class="bg-menu-main">
+                    <asp:Label ID="lblCuurDate" runat="server" ForeColor="White" Font-Bold="True" CssClass="style6"></asp:Label>
+                </td>
+            </tr>
+            <tr>
+                <td class="bg-menu-TD">
+                </td>
+                <td class="bg-menu-TD">
+                    Logged in as:
+                    <asp:Label ID="lblUserName" runat="server" Style="font-weight: 700"></asp:Label>
+                    &nbsp; &nbsp;<asp:LinkButton ID="lbtnHome" runat="server" CausesValidation="False"
+                        PostBackUrl="~/Default.aspx" CssClass="linkButton">Home</asp:LinkButton>&nbsp;|
+                    <asp:HyperLink ID="HyperLink1" runat="server" CssClass="linkButton" NavigateUrl="~/FAQs.doc"
+                        Target="_blank">FAQs</asp:HyperLink>&nbsp;|
+                    <asp:LinkButton ID="lbLogOut" runat="server" OnClick="lbLogOut_Click" CssClass="linkButton">Logout</asp:LinkButton>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: left" colspan="3">
+                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                    </asp:ContentPlaceHolder>
+                </td>
+            </tr>
+        </table>
+    </div>
+    </form>
+</body>
+<%--<script>
+ /////////////////////////// ADDED FOR IE COMPATIBILITY///////////////////////////////////////////////////////////////	
+    if (!jQuery.support.cors && window.XDomainRequest) {
+        var httpRegEx = /^https?:\/\//i;
+        var getOrPostRegEx = /^get|post$/i;
+        var sameSchemeRegEx = new RegExp('^' + location.protocol, 'i');
+        var xmlRegEx = /\/xml/i;
+        // ajaxTransport exists in jQuery 1.5+
+        jQuery.ajaxTransport('text html xml json', function(options, userOptions, jqXHR) {
+            // XDomainRequests must be: asynchronous, GET or POST methods, HTTP or HTTPS protocol, and same scheme as calling page
+            if (options.crossDomain && options.async && getOrPostRegEx.test(options.type) && httpRegEx.test(userOptions.url) && sameSchemeRegEx.test(userOptions.url)) {
+                var xdr = null;
+                var userType = (userOptions.dataType || '').toLowerCase();
+                return {
+                    send: function(headers, complete) {
+                        xdr = new XDomainRequest();
+                        if (/^\d+$/.test(userOptions.timeout)) {
+                            xdr.timeout = userOptions.timeout;
+                        }
+                        xdr.ontimeout = function() {
+                            complete(500, 'timeout');
+                        };
+                        xdr.onload = function() {
+                            var allResponseHeaders = 'Content-Length: ' + xdr.responseText.length + '\r\nContent-Type: ' + xdr.contentType;
+                            var status = {
+                                code: 200,
+                                message: 'success'
+                            };
+                            var responses = {
+                                text: xdr.responseText
+                            };
+                            try {
+                                if (userType === 'json') {
+                                    try {
+                                        responses.json = JSON.parse(xdr.responseText);
+                                    } catch (e) {
+                                        status.code = 500;
+                                        status.message = 'parseerror';
+                                        //throw 'Invalid JSON: ' + xdr.responseText;
+                                    }
+                                } else if ((userType === 'xml') || ((userType !== 'text') && xmlRegEx.test(xdr.contentType))) {
+                                    var doc = new ActiveXObject('Microsoft.XMLDOM');
+                                    doc.async = false;
+                                    try {
+                                        doc.loadXML(xdr.responseText);
+                                    } catch (e) {
+                                        doc = undefined;
+                                    }
+                                    if (!doc || !doc.documentElement || doc.getElementsByTagName('parsererror').length) {
+                                        status.code = 500;
+                                        status.message = 'parseerror';
+                                        throw 'Invalid XML: ' + xdr.responseText;
+                                    }
+                                    responses.xml = doc;
+                                }
+                            } catch (parseMessage) {
+                                throw parseMessage;
+                            } finally {
+                                complete(status.code, status.message, responses, allResponseHeaders);
+                            }
+                        };
+                        xdr.onerror = function() {
+                            complete(500, 'error', {
+                                text: xdr.responseText
+                            });
+                        };
+                        xdr.open(options.type, options.url);
+                        //xdr.send(userOptions.data);
+                        xdr.send();
+                    },
+                    abort: function() {
+                        if (xdr) {
+                            xdr.abort();
+                        }
+                    }
+                };
+            }
+        });
+    };
+    jQuery.support.cors = true;
+</script>--%>
+</html>

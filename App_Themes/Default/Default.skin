@@ -1,0 +1,39 @@
+﻿<%--
+Default skin template. The following skins are provided as examples only.
+
+1. Named control skin. The SkinId should be uniquely defined because
+   duplicate SkinId's per control type are not allowed in the same theme.
+
+<asp:GridView runat="server" SkinId="gridviewSkin" BackColor="White" >
+   <AlternatingRowStyle BackColor="Blue" />
+</asp:GridView>
+
+2. Default skin. The SkinId is not defined. Only one default 
+   control skin per control type is allowed in the same theme.
+
+<asp:Image runat="server" ImageUrl="~/images/image1.jpg" />
+--%>
+
+
+
+
+
+<asp:DropDownList runat="server" BorderColor="#999999" BorderWidth="1px"  ForeColor="Black" Font-Names="Verdana" Font-Size="8pt" />
+
+<asp:Calendar runat="server" BackColor="White"
+    BorderColor="#3366CC" BorderWidth="1px" CellPadding="1"
+    DayNameFormat="Shortest" Font-Names="Verdana" Font-Size="9pt"
+    ForeColor="Black" Height="200px" Width="220px"> 
+  <SelectedDayStyle BackColor="#009999" Font-Bold="True"
+    ForeColor="#CCFF99" />
+  <SelectorStyle BackColor="#99CCCC" ForeColor="#336666" />
+  <WeekendDayStyle BackColor="#CCCCFF" />
+  <OtherMonthDayStyle ForeColor="#999999" />
+  <TodayDayStyle BackColor="#99CCCC" ForeColor="White" />
+  <NextPrevStyle Font-Size="9pt" ForeColor="#CCCCFF" />
+  <DayHeaderStyle BackColor="#99CCCC" ForeColor="#336666" Height="1px" />
+  <TitleStyle BackColor="#003399" BorderColor="#3366CC" BorderWidth="1px"
+    Font-Bold="True"
+    Font-Size="10pt" ForeColor="#CCCCFF" Height="25px" />
+</asp:Calendar>
+

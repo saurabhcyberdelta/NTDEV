@@ -1,0 +1,552 @@
+<%@ Page Title="" Language="C#" MasterPageFile="~/eTMSMaster.Master" AutoEventWireup="true"
+    CodeFile="ViewRoutes.aspx.cs" Inherits="ViewRoutes" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    
+    <link href="StyleSheets/SoftGreyGridView.css" rel="stylesheet" type="text/css" />
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
+            <table align="center" border="0" style="height: 161px; width: 822px" cellpadding="2"
+                cellspacing="1" xml:lang="aa">
+                <tr>
+                    <td colspan="4" align="center">
+                        <asp:ValidationSummary ID="ValidationSummary1" runat="server" ShowMessageBox="True"
+                            ShowSummary="False" ValidationGroup="Submit" Height="16px" />
+                        <asp:ValidationSummary ID="ValidationSummary2" runat="server" ShowMessageBox="True"
+                            ShowSummary="False" ValidationGroup="Update" Height="16px" />
+                        <asp:ValidationSummary ID="ValidationSummary3" runat="server" ShowMessageBox="True"
+                            ShowSummary="False" ValidationGroup="add" Height="16px" />
+                        <asp:ValidationSummary ID="ValidationSummary4" runat="server" ShowMessageBox="True"
+                            ShowSummary="False" ValidationGroup="Search" Height="16px" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="4">
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td colspan="4" class="heading">
+                        Display Routes Information
+                        <br />
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td align="left">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Start Date:</b>
+                    </td>
+                    <td align="left">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>End Date:</b>&nbsp;
+                    </td>
+                    <td align="center">
+                        &nbsp; &nbsp;<b>Facility Name: </b>
+                    </td>
+                    <td rowspan="2">
+                        <asp:RadioButtonList ID="rdoTripType" runat="server" RepeatColumns="3" RepeatDirection="Horizontal"
+                            AutoPostBack="True" OnSelectedIndexChanged="rdoTripType_SelectedIndexChanged">
+                            <asp:ListItem Selected="True" Value="P">Pick</asp:ListItem>
+                            <asp:ListItem Value="D">Drop</asp:ListItem>
+                        </asp:RadioButtonList>
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td align="center" valign="middle">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <asp:TextBox ID="txtStartDate" runat="server" CssClass="TextBox"></asp:TextBox>
+                        <cc1:CalendarExtender ID="txtStartDate_CalendarExtender" runat="server" Enabled="true"
+                            TargetControlID="txtStartDate" PopupButtonID="ibcal1">
+                        </cc1:CalendarExtender>
+                        &nbsp;<asp:ImageButton ID="ibcal1" runat="server" ImageUrl="~/images/calendar_icon.gif"
+                            Height="17px" />
+                        <i>(mm/dd/yyyy)</i>
+                        <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtStartDate"
+                            Display="Dynamic" ErrorMessage="Enter Valid Start Date" ValidationExpression="^(([0]?[1-9]|1[0-2])/([0-2]?[0-9]|3[0-1])/[1-2]\d{3})? ?((([0-1]?\d)|(2[0-3])):[0-5]\d)?(:[0-5]\d)?$"
+                            ValidationGroup="Submit">*</asp:RegularExpressionValidator>
+                        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Enter Start Date"
+                            ControlToValidate="txtStartDate" ValidationGroup="Submit">*</asp:RequiredFieldValidator>
+                    </td>
+                    <td align="center" valign="middle">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <asp:TextBox ID="txtEndDate" runat="server" CssClass="TextBox"></asp:TextBox>
+                        &nbsp;<asp:ImageButton ID="ibcal2" runat="server" ImageUrl="~/images/calendar_icon.gif"
+                            Height="17px" />
+                        <cc1:CalendarExtender ID="txtEndDate_CalendarExtender" runat="server" Enabled="True"
+                            TargetControlID="txtEndDate" PopupButtonID="ibcal2">
+                        </cc1:CalendarExtender>
+                        <i>(mm/dd/yyyy)</i>
+                        <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="txtEndDate"
+                            Display="Dynamic" ErrorMessage="Enter Valid End Date" ValidationExpression="^(([0]?[1-9]|1[0-2])/([0-2]?[0-9]|3[0-1])/[1-2]\d{3})? ?((([0-1]?\d)|(2[0-3])):[0-5]\d)?(:[0-5]\d)?$"
+                            ValidationGroup="Submit">*</asp:RegularExpressionValidator>
+                        <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="Enter End Date"
+                            ControlToValidate="txtEndDate" ValidationGroup="Submit">*</asp:RequiredFieldValidator>
+                        <asp:CompareValidator ID="CompareValidator15" runat="server" ControlToCompare="txtStartDate"
+                            ControlToValidate="txtEndDate" ErrorMessage="End Date cannot be less than Start Date."
+                            Operator="GreaterThanEqual" SetFocusOnError="True" Type="Date" ValidationGroup="Submit">*</asp:CompareValidator>
+                    </td>
+                    <td align="center">
+                        &nbsp;
+                        <asp:DropDownList ID="ddlFacility" runat="server" AppendDataBoundItems="True" AutoPostBack="True"
+                            OnSelectedIndexChanged="ddlFacility_SelectedIndexChanged" CssClass="DropDownListBox3">
+                        </asp:DropDownList>
+                        <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="ddlFacility"
+                            Display="Dynamic" ErrorMessage="Select Facility" Operator="NotEqual" ValidationGroup="Submit"
+                            ValueToCompare="0">*</asp:CompareValidator>
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td align="right">
+                        <b>Shift:</b><br />
+                        <em>ctrl-click for multi - select</em>&nbsp;
+                    </td>
+                    <td align="left">
+                        &nbsp;<asp:ListBox ID="lstShift" runat="server" SelectionMode="Multiple" AppendDataBoundItems="True">
+                            <asp:ListItem Selected="True" Value="0"></asp:ListItem>
+                        </asp:ListBox>
+                        <asp:CompareValidator ID="CompareValidator2" runat="server" ControlToValidate="lstShift"
+                            ErrorMessage="Select Shift Time" Operator="NotEqual" ValidationGroup="Submit"
+                            ValueToCompare="0">*</asp:CompareValidator>
+                    </td>
+                    <td>
+                        <asp:Button ID="btnSubmit" runat="server" Text="Submit" ValidationGroup="Submit"
+                            OnClick="btnSubmit_Click" CssClass="Button" />
+                    </td>
+                    <td>
+                        <asp:DetailsView ID="DvViewStatistics" runat="server" AutoGenerateRows="False" BackColor="White"
+                            BorderColor="#E7E7FF" BorderStyle="Ridge" BorderWidth="1px" 
+                            CellPadding="3" GridLines="Horizontal"
+                            Height="50px" Width="180px" CssClass="Childgrid" Visible="False">
+                            <FooterStyle BackColor="#B5C7DE" ForeColor="#4A3C8C" />
+                            <RowStyle BackColor="#E7E7FF" ForeColor="#4A3C8C" HorizontalAlign="Right" />
+                            <PagerStyle BackColor="#E7E7FF" ForeColor="#4A3C8C" HorizontalAlign="Right" />
+                            <HeaderStyle BackColor="#4A3C8C" Font-Bold="True" ForeColor="#F7F7F7" HorizontalAlign="Right" />
+                            <EditRowStyle BackColor="#738A9C" Font-Bold="True" ForeColor="#F7F7F7" HorizontalAlign="Right" />
+                            <AlternatingRowStyle BackColor="#F7F7F7" HorizontalAlign="Right" />
+                            <Fields>
+                                <asp:TemplateField HeaderText="Total Routes :">
+                                    <ItemTemplate>
+                                        <%# Eval("TotalRoutes")%>
+                                    </ItemTemplate>
+                                    <HeaderStyle HorizontalAlign="Left" Font-Bold="True" />
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Total Employees :">
+                                    <ItemTemplate>
+                                        <%# Eval("TotalEmps")%>
+                                    </ItemTemplate>
+                                    <HeaderStyle HorizontalAlign="Left" Font-Bold="True" />
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Total 4-Seater :">
+                                    <ItemTemplate>
+                                        <%# Eval("Count4Seater")%>
+                                    </ItemTemplate>
+                                    <HeaderStyle HorizontalAlign="Left" Font-Bold="True" />
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderStyle-HorizontalAlign="Right" HeaderText="Total 8-Seater :">
+                                    <ItemTemplate>
+                                        <%# Eval("Count8Seater")%>
+                                    </ItemTemplate>
+                                    <HeaderStyle HorizontalAlign="Left" Font-Bold="True" />
+                                </asp:TemplateField>
+                            </Fields>
+                        </asp:DetailsView>
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td align="right" colspan="3">
+                        <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="UpdatePanel1"
+                            DisplayAfter="0">
+                            <ProgressTemplate>
+                                <table align="center" style="width: 400px">
+                                    <tr>
+                                        <td colspan="4" style="width: 200px">
+                                            <img src="images/ajax-loader.gif" style="width: 16px; height: 16px" alt="Loding..." />
+                                        </td>
+                                        <td class="main_bg" style="width: 200px" align="left">
+                                            Loading.....Please Wait!!!
+                                        </td>
+                                    </tr>
+                                </table>
+                            </ProgressTemplate>
+                        </asp:UpdateProgress>
+                    </td>
+                    <td align="right" style="width: 180px">
+                        <asp:HyperLink ID="lbtnPrintHtml" runat="server" Visible="False" Target="new" CssClass="linkButton" 
+                            >Print HTML</asp:HyperLink>
+                        <br />
+                        <asp:LinkButton ID="lbtnPrintExcel" runat="server" OnClick="lbtnPrintExcel_Click"
+                            Visible="False" CssClass="linkButton">Export to Excel</asp:LinkButton>
+                    </td>
+                </tr>
+            </table>
+        </ContentTemplate>
+        <Triggers>
+            <asp:PostBackTrigger ControlID="lbtnPrintExcel" />
+        </Triggers>
+    </asp:UpdatePanel>
+    <asp:UpdatePanel ID="perentPnl" runat="server">
+        <ContentTemplate>
+            <asp:MultiView ID="mvViewRouteParent" runat="server">
+                <asp:View ID="view1" runat="server">
+                    <table align="center">
+                        <tr align="center">
+                            <td align="right" colspan="4">
+                                <asp:UpdateProgress ID="UpdateProgress2" runat="server" AssociatedUpdatePanelID="perentPnl"
+                                    DisplayAfter="0">
+                                    <ProgressTemplate>
+                                        <table align="center">
+                                            <tr>
+                                                <td colspan="4">
+                                                    <img src="images/ajax-loader.gif" style="width: 16px; height: 16px" alt="Loding..." />
+                                                </td>
+                                                <td class="main_bg">
+                                                    Loading.....Please Wait!!!
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </ProgressTemplate>
+                                </asp:UpdateProgress>
+                            </td>
+                        </tr>
+                    </table>
+                    <asp:GridView ID="grdViewRouteParent" runat="server" AutoGenerateColumns="False"
+                        GridLines="None" OnRowCancelingEdit="grdViewRouteParent_RowCancelingEdit" OnRowEditing="grdViewRouteParent_RowEditing"
+                        OnRowCommand="grdViewRouteParent_RowCommand" DataKeyNames="RouteID" OnRowDataBound="grdViewRouteParent_RowDataBound"
+                        Width="850px" OnRowDeleting="grdViewRouteParent_RowDeleting" AllowSorting="True"
+                        HorizontalAlign="Center" OnSorting="grdViewRouteParent_Sorting" AllowPaging="True"
+                        ShowFooter="True" OnPageIndexChanging="grdViewRouteParent_PageIndexChanging"
+                        CssClass="GridViewStyleSoftGrey" PageSize="30" 
+                        EmptyDataText="No Record were found!!">
+                        <RowStyle CssClass="RowStyle" />
+                        <PagerStyle CssClass="PagerStyle" />
+                        <SelectedRowStyle CssClass="SelectedRowStyle" />
+                        <HeaderStyle CssClass="HeaderStyle" />
+                        <EditRowStyle CssClass="EditRowStyle" />
+                        <AlternatingRowStyle CssClass="AltRowStyle" />
+                        <FooterStyle CssClass="FooterStyle" />
+                        <EmptyDataRowStyle ForeColor="Red" Font-Bold="true"  HorizontalAlign="Left"/>
+                        <Columns>
+                            <asp:TemplateField HeaderText="Route ID" SortExpression="RouteID">
+                                <ItemTemplate>
+                                    <div style="width: 140px;">
+                                        <asp:CheckBox ID="chkBxRouteID" runat="server" />
+                                        <asp:ImageButton ID="ibViewRouteID" runat="server" ImageUrl="~/images/plus.gif" ToolTip="To Expand the Route Detail"
+                                            CommandName="ShowDetailPanel" CommandArgument='<%# Container.DataItemIndex %>' />
+                                        <asp:Label ID="lblRouteID" Text='<%# Eval("RouteID") %>' runat="server"></asp:Label>
+                                    </div>
+                                </ItemTemplate>
+                                <ItemStyle HorizontalAlign="Center" />
+                                <HeaderStyle HorizontalAlign="Center" />
+                                <FooterTemplate>
+                                    <asp:LinkButton ID="linkbtMerge" CommandName="Merge" runat="server" ForeColor="#F0F0F0"
+                                        Font-Size="12px">Merge</asp:LinkButton>
+                                </FooterTemplate>
+                                <FooterStyle HorizontalAlign="Center" />
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Shift" SortExpression="shiftTime">
+                                <ItemTemplate>
+                                    <%# Eval("shiftTime")%></ItemTemplate>
+                                <ItemStyle HorizontalAlign="Center" />
+                                <HeaderStyle HorizontalAlign="Center" />
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Address" SortExpression="Address">
+                                <ItemTemplate>
+                                    <%# Eval("Address")%></ItemTemplate>
+                                <ItemStyle Width="320px" HorizontalAlign="left" />
+                                <HeaderStyle HorizontalAlign="Center" />
+                                <FooterTemplate>
+                                    <asp:Label ID="lblParentErrorMsg" runat="server" Font-Bold="True" Font-Size="Small"
+                                        ForeColor="Red"></asp:Label>
+                                </FooterTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="">
+                                <ItemTemplate>
+                                    <%# Eval("totalStop")%></ItemTemplate>
+                                <ItemStyle HorizontalAlign="Center" />
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Vendor" SortExpression="Vendor">
+                                <ItemTemplate>
+                                    <asp:DropDownList ID="ddlVendor" runat="server" AppendDataBoundItems="True" TabIndex="1">
+                                    </asp:DropDownList>
+                                </ItemTemplate>
+                                <ItemStyle HorizontalAlign="Center" />
+                                <HeaderStyle HorizontalAlign="Center" />
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="CabID">
+                                <ItemTemplate>
+                                    <asp:TextBox ID="txtCabID" runat="server" CssClass="TextBox" MaxLength="10" TabIndex="1"></asp:TextBox>
+                                    <asp:RegularExpressionValidator ID="RegExpAlphanum" runat="server" 
+                                        ControlToValidate="txtCabID" Display="Dynamic" 
+                                        ErrorMessage="Cab ID Should be Alphanumeric." 
+                                        Text="*"
+                                        ValidationExpression="^([\w\-_]|\s)*$" ValidationGroup="add"></asp:RegularExpressionValidator>
+                                </ItemTemplate>
+                                <FooterTemplate>
+                                    <asp:ImageButton ID="ibAssignSticker" runat="server" ImageUrl="~/images/save.png"
+                                        ToolTip="Assign Vendor/StickerNo" ValidationGroup="add" CssClass="ImageButton"
+                                        OnClick="ibAssignSticker_Click" />
+                                </FooterTemplate>
+                                <ItemStyle HorizontalAlign="Center" />
+                                <HeaderStyle HorizontalAlign="Center" />
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="">
+                                <ItemTemplate>
+                                    <asp:ImageButton ID="ibDeleteRoute" runat="server" ImageUrl="~/images/delete1.jpg"
+                                        ToolTip="Delete Route" CommandName="Delete" CssClass="ImageButton" OnClick="ibDeleteRoute_Click" />
+                                    <cc1:ConfirmButtonExtender ID="ibDeleteRoute_ConfirmButtonExtender" runat="server"
+                                        ConfirmText="Are you sure you want to delete this RouteID?" Enabled="True" TargetControlID="ibDeleteRoute">
+                                    </cc1:ConfirmButtonExtender>
+                                </ItemTemplate>
+                                <ItemStyle HorizontalAlign="Center" />
+                                <HeaderStyle HorizontalAlign="Center" />
+                            </asp:TemplateField>
+                            <asp:TemplateField>
+                                <ItemTemplate>
+                                    <tr>
+                                        <td colspan="9" align="center">
+                                            <asp:UpdatePanel ID="childPnl" runat="server">
+                                                <ContentTemplate>
+                                                    <asp:GridView ID="grdViewRouteChild" AutoGenerateColumns="False" runat="server" DataKeyNames="routeid,id,shiftdate"
+                                                        ShowFooter="True" OnRowCommand="grdViewRouteChild_RowCommand" OnRowEditing="grdViewRouteChild_RowEditing"
+                                                        OnSelectedIndexChanging="grdViewRouteChild_SelectedIndexChanging" Visible="False"
+                                                        OnRowDataBound="grdViewRouteChild_RowDataBound" CssClass="Childgrid" Width="800px">
+                                                        <RowStyle BackColor="#E7E7FF" HorizontalAlign="Left" />
+                                                        <AlternatingRowStyle BackColor="#F7F7F7" BorderColor="Black" HorizontalAlign="Left" />
+                                                        <PagerStyle BackColor="#E7E7FF" HorizontalAlign="Right" />
+                                                        <HeaderStyle CssClass="ChildgridHeaderStyle" />
+                                                        <FooterStyle CssClass="ChildgridFooterStyle" />
+                                                        <Columns>
+                                                            <asp:TemplateField HeaderText="Employee Detail" SortExpression="empCode">
+                                                                <ItemTemplate>
+                                                                    <div style="width: 200px;">
+                                                                        <asp:CheckBox ID="chkBxEmployeeID" runat="server" />
+                                                                        <%# Eval("empCode") %> - <%# Eval("EmpName") %>
+                                                                    </div>
+                                                                </ItemTemplate>
+                                                                <ItemStyle HorizontalAlign="Left" />
+                                                                <FooterTemplate>
+                                                                    <asp:ImageButton ID="ImbtSplit" runat="server" ImageUrl="~/images/Split1.png" ToolTip="Split Employee"
+                                                                        BackColor="Black" Height="20px" Width="20px" CommandName="Split" CausesValidation="false"
+                                                                        ImageAlign="AbsMiddle" />
+                                                                </FooterTemplate>
+                                                            </asp:TemplateField>
+                                                            <asp:TemplateField HeaderText="G" SortExpression="Gender">
+                                                                <ItemTemplate>
+                                                                    <%# Eval("Gender") %>
+                                                                </ItemTemplate>
+                                                                <ItemStyle HorizontalAlign="Left" />
+                                                                <FooterTemplate>
+                                                                    <asp:ImageButton ID="ImbtInsert" runat="server" ImageUrl="~/images/Insert-icon.png"
+                                                                        ToolTip="Insert Employee" Height="20px" Width="20px" CommandName="InsertEmployee"
+                                                                        CommandArgument='<%# Container.DataItemIndex %>' CausesValidation="false" ImageAlign="AbsMiddle" />
+                                                                </FooterTemplate>
+                                                            </asp:TemplateField>
+                                                            <asp:TemplateField HeaderText="Address" SortExpression="Address">
+                                                                <ItemTemplate>
+                                                                    <%# Eval("Address") %>
+                                                                </ItemTemplate>
+                                                                <FooterTemplate>
+                                                                    <asp:Label ID="lblChildErrorMsg" runat="server" Font-Bold="True" Font-Size="Small"
+                                                                        ForeColor="Red"></asp:Label>
+                                                                </FooterTemplate>
+                                                            </asp:TemplateField>
+                                                            <asp:TemplateField HeaderText="">
+                                                                <ItemTemplate>
+                                                                    <%# Eval("tripType") %>
+                                                                </ItemTemplate>
+                                                                <ItemStyle HorizontalAlign="Left" />
+                                                            </asp:TemplateField>
+                                                            <asp:TemplateField HeaderText="SNo" SortExpression="stopNo">
+                                                                <ItemTemplate>
+                                                                    <asp:TextBox ID="txtstopNo" Text='<%# Eval("stopNo")%>' runat="server" Height="12px"
+                                                                        Width="15px" MaxLength="2"></asp:TextBox>
+                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidStopNo" runat="server" Display="Dynamic"
+                                                                        ErrorMessage="Enter Stop No" ControlToValidate="txtstopNo" ValidationGroup="Update"
+                                                                        SetFocusOnError="True">*</asp:RequiredFieldValidator>
+                                                                    <asp:RangeValidator ID="RangeValidatorstopNo" runat="server" ValidationGroup="Update"
+                                                                        ErrorMessage="Enter Valid Stop No" MaximumValue="99" MinimumValue="1" SetFocusOnError="True"
+                                                                        ControlToValidate="txtstopNo" Display="Dynamic">*</asp:RangeValidator>
+                                                                </ItemTemplate>
+                                                                <ItemStyle HorizontalAlign="Left" />
+                                                            </asp:TemplateField>
+                                                            <asp:TemplateField HeaderText="ETA" SortExpression="ETA">
+                                                                <ItemTemplate>
+                                                                    <div style="width: 50px;">
+                                                                        <asp:TextBox ID="txtETAhh" Text='<%# Eval("ETAhh")%>' runat="server" Height="12px"
+                                                                            Width="15px" MaxLength="2"></asp:TextBox>
+                                                                        <asp:TextBox ID="txtETAmm" Text='<%# Eval("ETAmm")%>' runat="server" Height="12px"
+                                                                            Width="15px" MaxLength="2"></asp:TextBox>
+                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidETAhh" runat="server" ErrorMessage="Enter ETA Hours"
+                                                                            ControlToValidate="txtETAhh" ValidationGroup="Update" SetFocusOnError="True"
+                                                                            Display="Dynamic">*</asp:RequiredFieldValidator>
+                                                                        <asp:RangeValidator ID="RangeValidator1" runat="server" ValidationGroup="Update"
+                                                                            ErrorMessage="Enter Valid ETA Hours" MaximumValue="23" MinimumValue="0" SetFocusOnError="True"
+                                                                            ControlToValidate="txtETAhh" Display="Dynamic">*</asp:RangeValidator>
+                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidETAmm" runat="server" ErrorMessage="Enter ETA Minuts"
+                                                                            ControlToValidate="txtETAmm" ValidationGroup="Update" SetFocusOnError="True"
+                                                                            Display="Dynamic">*</asp:RequiredFieldValidator>
+                                                                        <asp:RangeValidator ID="RangeValidator2" runat="server" ValidationGroup="Update"
+                                                                            ErrorMessage="Enter Valid ETA Minuts" MaximumValue="59" Display="Dynamic" MinimumValue="0"
+                                                                            SetFocusOnError="True" ControlToValidate="txtETAmm">*</asp:RangeValidator>
+                                                                    </div>
+                                                                </ItemTemplate>
+                                                                <ItemStyle HorizontalAlign="Left" />
+                                                            </asp:TemplateField>
+                                                            <asp:TemplateField HeaderText="C">
+                                                                <ItemTemplate>
+                                                                    <asp:ImageButton ID="ibCutEmployee" runat="server" ImageUrl="~/images/cut1.jpg" ToolTip="Cut Employee"
+                                                                        Height="17px" Width="17px" CommandName="Select" CausesValidation="false" CommandArgument='<%# Container.DataItemIndex %>' />
+                                                                </ItemTemplate>
+                                                                <ItemStyle HorizontalAlign="Left" />
+                                                            </asp:TemplateField>
+                                                            <asp:TemplateField HeaderText="P">
+                                                                <ItemTemplate>
+                                                                    <asp:ImageButton ID="ibPasteEmployee" runat="server" ImageUrl="~/images/Paste1.jpg"
+                                                                        ToolTip="Paste Employee" Height="17px" Width="17px" CommandName="Paste" CausesValidation="false"
+                                                                        CommandArgument='<%# Container.DataItemIndex %>' ValidationGroup="Update" />
+                                                                </ItemTemplate>
+                                                                <ItemStyle HorizontalAlign="Left" />
+                                                            </asp:TemplateField>
+                                                            <asp:TemplateField HeaderText="D">
+                                                                <ItemTemplate>
+                                                                    <asp:ImageButton ID="ibDeleteEmployee" runat="server" ImageUrl="~/images/delete1.jpg"
+                                                                        ToolTip="Delete Employee" Height="17px" Width="17px" CommandName="Delete" OnClick="ibDeleteEmployee_Click" />
+                                                                    <cc1:ConfirmButtonExtender ID="ibDeleteEmployee_ConfirmButtonExtender" runat="server"
+                                                                        ConfirmText="Are you sure you want to delete this Employee?" Enabled="True" TargetControlID="ibDeleteEmployee">
+                                                                    </cc1:ConfirmButtonExtender>
+                                                                </ItemTemplate>
+                                                                <ItemStyle HorizontalAlign="Left" />
+                                                                <FooterTemplate>
+                                                                    <asp:ImageButton ID="ibUpdateStopNo" runat="server" ImageUrl="~/images/save.png"
+                                                                        ToolTip="Update Stop No & ETA" Height="20px" Width="20px" CommandName="UpdateStopNo"
+                                                                        ValidationGroup="Update" />
+                                                                </FooterTemplate>
+                                                            </asp:TemplateField>
+                                                        </Columns>
+                                                    </asp:GridView>
+                                                </ContentTemplate>
+                                            </asp:UpdatePanel>
+                                        </td>
+                                    </tr>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                        </Columns>
+                        <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
+                    </asp:GridView>
+                </asp:View>
+            </asp:MultiView>
+            <table>
+                <tr>
+                    <td>
+                        <asp:Button ID="btnHidden" runat="server" Style="display: none" />
+                        <cc1:ModalPopupExtender ID="ModalPopupExtender" runat="server" Enabled="True" BackgroundCssClass="modalBackground"
+                            Drag="True" TargetControlID="btnHidden" CancelControlID="ibtnSMclose" PopupControlID="Panel1">
+                        </cc1:ModalPopupExtender>
+                        
+                            <asp:Panel ID="Panel1" runat="server" CssClass="modaltable" DefaultButton="btnEmpSearch"
+                                Width="600px" ScrollBars="Auto" Style="visibility: hidden">
+                                <table width="600">
+                                    <tr>
+                                        <td width="95%" bgcolor="#003366" style="color: #FFFFFF" align="center">
+                                            <b>Allow User to Insert New Employee in the Route.</b>
+                                        </td>
+                                        <td bgcolor="#003366">
+                                            <asp:ImageButton ID="ibtnSMclose" runat="server" ImageUrl="~/Images/Exit.jpg" OnClick="lbtnClose_Click" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center" colspan="2">
+                                            &nbsp;&nbsp;
+                                            <asp:Label ID="lblSearch" runat="server" CssClass="error"></asp:Label>
+                                            <table width="100%" class="GridViewStyleSoftGrey">
+                                                <tr>
+                                                    <td style="text-align: right">
+                                                        Stop NO:
+                                                    </td>
+                                                    <td style="text-align: left">
+                                                        <asp:DropDownList ID="ddlStopNO" runat="server" AppendDataBoundItems="True" 
+                                                            CssClass="DropDownListBox3">
+                                                        </asp:DropDownList>
+                                                        <asp:CompareValidator ID="CompareValidator14" runat="server" ControlToValidate="ddlStopNO"
+                                                            Display="Dynamic" ErrorMessage="Select Stop No" Operator="NotEqual" ValidationGroup="Add"
+                                                            ValueToCompare="0"></asp:CompareValidator>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: right" align="right" width="40%">
+                                                        Enter&nbsp; ID or Name:
+                                                    </td>
+                                                    <td style="text-align: left" align="left" width="60%">
+                                                        <asp:TextBox ID="txtEmpIdName" runat="server" ValidationGroup="spoc" CssClass="TextBox1"></asp:TextBox>
+                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="txtEmpIdName"
+                                                            Display="Dynamic" ErrorMessage="Please Enter Name or Id" ValidationGroup="search"></asp:RequiredFieldValidator>
+                                                        &nbsp;
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: right">
+                                                        &nbsp;
+                                                    </td>
+                                                    <td style="text-align: left" align="left">
+                                                        <asp:Button ID="btnEmpSearch" runat="server" OnClick="btnEmpSearch_Click" Text="Search"
+                                                            ValidationGroup="search" CssClass="Button" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <asp:GridView ID="GvEmployee" runat="server" AllowPaging="True" AutoGenerateColumns="False"
+                                                            DataKeyNames="Id" OnPageIndexChanging="GvEmployee_PageIndexChanging" OnSelectedIndexChanging="GvEmployee_SelectedIndexChanging"
+                                                            CssClass="GridViewStyleSoftGrey" Visible="False" Width="550px">
+                                                            <Columns>
+                                                                <asp:TemplateField HeaderText="Employee Id">
+                                                                    <ItemTemplate>
+                                                                        <asp:Label ID="lblEmpId1" runat="server" Text='<%# Eval("empCode") %>'></asp:Label>
+                                                                    </ItemTemplate>
+                                                                </asp:TemplateField>
+                                                                <asp:TemplateField HeaderText="Employee Name">
+                                                                    <ItemTemplate>
+                                                                        <asp:Label ID="lblEmpName1" runat="server" Text='<%# Eval("empName") %>'></asp:Label>
+                                                                    </ItemTemplate>
+                                                                </asp:TemplateField>
+                                                                <asp:TemplateField HeaderText="Process">
+                                                                    <ItemTemplate>
+                                                                        <asp:Label ID="lblEmpProcess" runat="server" Text='<%# Eval("processName") %>'></asp:Label>
+                                                                    </ItemTemplate>
+                                                                </asp:TemplateField>
+                                                                <asp:TemplateField HeaderText="Facility">
+                                                                    <ItemTemplate>
+                                                                        <asp:Label ID="lblFacility" runat="server" Text='<%# Eval("facilityName") %>'></asp:Label>
+                                                                    </ItemTemplate>
+                                                                </asp:TemplateField>
+                                                                
+                                                                <asp:TemplateField ShowHeader="False">
+                                                                    <ItemTemplate>
+                                                                        <asp:LinkButton ID="LinkButton1" runat="server" CommandName="Select" Text="Add" ValidationGroup="Add"></asp:LinkButton>
+                                                                    </ItemTemplate>
+                                                                </asp:TemplateField>
+                                                            </Columns>
+                                                            <RowStyle CssClass="RowStyle" />
+                                                            <PagerStyle CssClass="PagerStyle" />
+                                                            <SelectedRowStyle CssClass="SelectedRowStyle" />
+                                                            <HeaderStyle CssClass="HeaderStyle" />
+                                                            <EditRowStyle CssClass="EditRowStyle" />
+                                                            <AlternatingRowStyle CssClass="AltRowStyle" />
+                                                            <FooterStyle CssClass="FooterStyle" />
+                                                        </asp:GridView>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        
+                    </td>
+                </tr>
+            </table>
+        </ContentTemplate>
+        <Triggers>
+            <asp:AsyncPostBackTrigger ControlID="btnSubmit" EventName="Click" />
+        </Triggers>
+    </asp:UpdatePanel>
+</asp:Content>

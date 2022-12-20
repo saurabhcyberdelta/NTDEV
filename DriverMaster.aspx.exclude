@@ -1,0 +1,336 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/eTMSMaster.Master" AutoEventWireup="true"
+    CodeFile="DriverMaster.aspx.cs" Inherits="DriverMaster" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
+            <asp:ValidationSummary ID="ValidationSummary1" runat="server" ShowMessageBox="True"
+                ShowSummary="False" ValidationGroup="add" />
+            <table width="60%">
+                <tr>
+                    <td>
+                        <table>
+                            <tr>
+                                <td class="heading" style="width: 99%">
+                                    <div class="gradient2">
+                                        <h1>
+                                            <span></span>Driver Master
+                                        </h1>
+                                        <h2>
+                                            Allows to View/Edit and Add New Driver.</h2>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table width="100%">
+                            <tr>
+                                <td>
+                                    <table width="50%">
+                                        <tr>
+                                            <td valign="middle" align="left">
+                                                <table width="100%" class="table">
+                                                    <tr>
+                                                        <td align="center" class="row1">
+                                                            <b>Facility</b>
+                                                        </td>
+                                                        <td align="center" class="row1">
+                                                            <b>Vendor</b>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="center">
+                                                            <asp:DropDownList ID="ddlSelectFacility" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlSelectFacility_SelectedIndexChanged"
+                                                                AppendDataBoundItems="True">
+                                                            </asp:DropDownList>
+                                                        </td>
+                                                        <td align="center">
+                                                            <asp:DropDownList ID="ddlSelectVendor" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlSelectVendor_SelectedIndexChanged"
+                                                                AppendDataBoundItems="True">
+                                                            </asp:DropDownList>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center">
+                                                <table border="1" bordercolor="black" align="center">
+                                                    <tr>
+                                                        <td bgcolor="red">
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                                        </td>
+                                                        <td>
+                                                            Expired
+                                                        </td>
+                                                        <td bgcolor="green">
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                                        </td>
+                                                        <td>
+                                                            5 Days Left
+                                                        </td>
+                                                        <td bgcolor="SteelBlue">
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                                        </td>
+                                                        <td>
+                                                            7 Days Left
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center">
+                                                <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="UpdatePanel1"
+                                                    DisplayAfter="0">
+                                                    <ProgressTemplate>
+                                                        <table align="center" align="center">
+                                                            <tr>
+                                                                <td align="center">
+                                                                    <img src="images/ajax-loader.gif" style="width: 16px; height: 16px" />
+                                                                </td>
+                                                                <td class="main_bg">
+                                                                    Loading.....Please Wait!!!
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </ProgressTemplate>
+                                                </asp:UpdateProgress>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <asp:MultiView ID="MultiView1" runat="server">
+                                        <asp:View ID="View1" runat="server">
+                                            <table align="center" width="100%">
+                                                <tr>
+                                                    <td align="center">
+                                                        <asp:GridView ID="GVDriverMaster" runat="server" AllowPaging="True" AutoGenerateColumns="False"
+                                                            DataKeyNames="ID" OnPageIndexChanging="GVDriverMaster_PageIndexChanging" PageSize="20"
+                                                            CssClass="GridView" BorderWidth="0px" EmptyDataText="No record found" ShowFooter="True" Width="1200px" OnRowDataBound="GVDriverMaster_RowDataBound">
+                                                            <RowStyle CssClass="RowStyle" />
+                                                            <FooterStyle CssClass="FooterStyle" />
+                                                            <PagerStyle CssClass="PagerStyle" />
+                                                            <SelectedRowStyle CssClass="SelectedRowStyle" />
+                                                            <HeaderStyle BackColor="#004f75" ForeColor="White" Font-Bold="true" />
+                                                            <EditRowStyle BackColor="#999999" />
+                                                            <AlternatingRowStyle CssClass="AltRowStyle" />
+                                                            <EmptyDataRowStyle ForeColor="Red" Font-Bold="true" HorizontalAlign="Left" />
+                                                            <Columns>
+                                                                <asp:BoundField DataField="vehicleNo" HeaderText="CabID" />
+                                                                <asp:BoundField DataField="DriverName" HeaderText="Driver Name" />
+                                                                <asp:BoundField DataField="DateOfJoining" HeaderText="Date Of Joining" />
+                                                                <asp:BoundField DataField="BadgeNo" HeaderText="BadgeNo" />
+                                                                <asp:BoundField DataField="BadgeIssueDate" HeaderText="Badge Issue Date" />
+                                                                <asp:BoundField DataField="BadgeExpiryDate" HeaderText="Badge Expiry Date" />
+                                                                <asp:BoundField DataField="LicenseNumber" HeaderText="License Number" />
+                                                                <asp:BoundField DataField="LicenseIssuedDate" HeaderText="License Issued Date" />
+                                                                <asp:BoundField DataField="LicenseExpiryDate" HeaderText="License Expiry Date" />
+                                                                <asp:BoundField DataField="TotalExperience" HeaderText="Total Experience" />
+                                                                <asp:BoundField DataField="AreaofResidence" HeaderText="Area Of Residence" />
+                                                                <asp:BoundField DataField="Contact1" HeaderText="Contact1" />
+                                                                <asp:BoundField DataField="Contact2" HeaderText="Contact2" />
+                                                            </Columns>
+                                                        </asp:GridView>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="center">
+                                                        <asp:LinkButton ID="lbtnAddNew" runat="server" OnClick="lbtnAddNew_Click">Click Add/Update Driver</asp:LinkButton>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </asp:View>
+                                        <asp:View ID="View2" runat="server">
+                                            <table align="center">
+                                                <tr>
+                                                    <td align="center">
+                                                        <asp:DetailsView ID="DvDriver" runat="server" AutoGenerateRows="False" DefaultMode="Insert"
+                                                            HeaderText="Add/Edit Driver Information" Height="50px" OnItemInserting="DvVehicle_ItemInserting"
+                                                            OnModeChanging="DvVehicle_ModeChanging" Width="100%">
+                                                            <Fields>
+                                                                <asp:TemplateField HeaderText="Facility">
+                                                                    <InsertItemTemplate>
+                                                                        <asp:DropDownList ID="ddldvFacility" runat="server" AppendDataBoundItems="True" CssClass="DropDownListBox3"
+                                                                            AutoPostBack="True" OnSelectedIndexChanged="ddldvFacility_SelectedIndexChanged">
+                                                                        </asp:DropDownList>
+                                                                        <asp:CompareValidator ID="CompareVa" runat="server" ControlToValidate="ddldvFacility"
+                                                                            Display="Dynamic" ErrorMessage="Select Facility" Operator="NotEqual" ValidationGroup="add"
+                                                                            ValueToCompare="0" SetFocusOnError="true">*</asp:CompareValidator>
+                                                                    </InsertItemTemplate>
+                                                                </asp:TemplateField>
+                                                                <asp:TemplateField HeaderText="CabID">
+                                                                    <InsertItemTemplate>
+                                                                        <asp:DropDownList ID="ddlDvCabID" runat="server" AppendDataBoundItems="True" CssClass="DropDownListBox3"
+                                                                            AutoPostBack="True" OnSelectedIndexChanged="ddlDvCabID_SelectedIndexChanged">
+                                                                            <asp:ListItem Text="Select CabID" Value="0"></asp:ListItem>
+                                                                        </asp:DropDownList>
+                                                                        <asp:CompareValidator ID="CompareValidat" runat="server" ControlToValidate="ddlDvCabID"
+                                                                            Display="Dynamic" ErrorMessage="Select CabID" Operator="NotEqual" ValidationGroup="add"
+                                                                            ValueToCompare="0" SetFocusOnError="true">*</asp:CompareValidator>
+                                                                    </InsertItemTemplate>
+                                                                </asp:TemplateField>
+                                                                <asp:TemplateField HeaderText="Driver Name">
+                                                                    <InsertItemTemplate>
+                                                                        <asp:TextBox ID="txtDvDriverName" runat="server" MaxLength="50" CssClass="TextBox"></asp:TextBox>
+                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtDvDriverName"
+                                                                            Display="Dynamic" ErrorMessage="Enter Driver Name" ValidationGroup="add" SetFocusOnError="true">*</asp:RequiredFieldValidator>
+                                                                        <asp:RegularExpressionValidator ID="RegExpAlphanum1" runat="server" ControlToValidate="txtDvDriverName"
+                                                                            Display="Dynamic" ErrorMessage="Driver Name Should be Alphanumeric." ValidationExpression="^([\w\-]|\s)*$"
+                                                                            ValidationGroup="add" Text="*" SetFocusOnError="true"></asp:RegularExpressionValidator>
+                                                                    </InsertItemTemplate>
+                                                                </asp:TemplateField>
+                                                                <asp:TemplateField HeaderText="Date Of Joining">
+                                                                    <InsertItemTemplate>
+                                                                        <asp:TextBox ID="txtDateOfJoining" runat="server" MaxLength="10" CssClass="TextBox"></asp:TextBox>
+                                                                        <cc1:CalendarExtender ID="txtDateOfJoining_CalendarExtender" runat="server" Enabled="True"
+                                                                            TargetControlID="txtDateOfJoining">
+                                                                        </cc1:CalendarExtender>
+                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtDateOfJoining"
+                                                                            Display="Dynamic" ErrorMessage="Enter Date Of Joining" ValidationGroup="add"
+                                                                            SetFocusOnError="true">*</asp:RequiredFieldValidator>
+                                                                        <asp:RegularExpressionValidator ID="RegularExpressionVidator6" runat="server" ControlToValidate="txtDateOfJoining"
+                                                                            Display="Dynamic" ErrorMessage="Enter Valid Date Of Joining" ValidationExpression="^(([0]?[1-9]|1[0-2])/([0-2]?[0-9]|3[0-1])/[1-2]\d{3})? ?((([0-1]?\d)|(2[0-3])):[0-5]\d)?(:[0-5]\d)?$"
+                                                                            ValidationGroup="add" SetFocusOnError="true">*</asp:RegularExpressionValidator>
+                                                                    </InsertItemTemplate>
+                                                                </asp:TemplateField>
+                                                                <asp:TemplateField HeaderText="BadgeNo">
+                                                                    <InsertItemTemplate>
+                                                                        <asp:TextBox ID="txtdvBadgeNo" runat="server" MaxLength="10" CssClass="TextBox"></asp:TextBox>
+                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator12" runat="server" ControlToValidate="txtdvBadgeNo"
+                                                                            Display="Dynamic" ErrorMessage="Enter BadgeNo" ValidationGroup="add" SetFocusOnError="true">*</asp:RequiredFieldValidator>
+                                                                    </InsertItemTemplate>
+                                                                </asp:TemplateField>
+                                                                <asp:TemplateField HeaderText="Badge Issue Date">
+                                                                    <InsertItemTemplate>
+                                                                        <asp:TextBox ID="txtdvBadgeIssueDate" runat="server" MaxLength="10" CssClass="TextBox"></asp:TextBox>
+                                                                        <cc1:CalendarExtender ID="txtdvBadgeIssueDate_CalendarExtender" runat="server" Enabled="True"
+                                                                            TargetControlID="txtdvBadgeIssueDate">
+                                                                        </cc1:CalendarExtender>
+                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="txtdvBadgeIssueDate"
+                                                                            Display="Dynamic" ErrorMessage="Enter Badge Issue Date" ValidationGroup="add"
+                                                                            SetFocusOnError="true">*</asp:RequiredFieldValidator>
+                                                                        <asp:RegularExpressionValidator ID="RegularExpressiondator6" runat="server" ControlToValidate="txtdvBadgeIssueDate"
+                                                                            Display="Dynamic" ErrorMessage="Enter Valid Badge Issue Date" ValidationExpression="^(([0]?[1-9]|1[0-2])/([0-2]?[0-9]|3[0-1])/[1-2]\d{3})? ?((([0-1]?\d)|(2[0-3])):[0-5]\d)?(:[0-5]\d)?$"
+                                                                            ValidationGroup="add" SetFocusOnError="true">*</asp:RegularExpressionValidator>
+                                                                    </InsertItemTemplate>
+                                                                </asp:TemplateField>
+                                                                <asp:TemplateField HeaderText="Badge Expiry Date">
+                                                                    <InsertItemTemplate>
+                                                                        <asp:TextBox ID="txtdvBadgeExpiryDate" runat="server" MaxLength="10" CssClass="TextBox"></asp:TextBox>
+                                                                        <cc1:CalendarExtender ID="txtdvBadgeExpiryDate_CalendarExtender0" runat="server"
+                                                                            Enabled="True" TargetControlID="txtdvBadgeExpiryDate">
+                                                                        </cc1:CalendarExtender>
+                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ControlToValidate="txtdvBadgeExpiryDate"
+                                                                            Display="Dynamic" ErrorMessage="Enter Badge Expiry Date" ValidationGroup="add"
+                                                                            SetFocusOnError="true">*</asp:RequiredFieldValidator>
+                                                                        <asp:RegularExpressionValidator ID="RegularonValidator6" runat="server" ControlToValidate="txtdvBadgeExpiryDate"
+                                                                            Display="Dynamic" ErrorMessage="Enter Valid Badge Expiry Date" ValidationExpression="^(([0]?[1-9]|1[0-2])/([0-2]?[0-9]|3[0-1])/[1-2]\d{3})? ?((([0-1]?\d)|(2[0-3])):[0-5]\d)?(:[0-5]\d)?$"
+                                                                            ValidationGroup="add" SetFocusOnError="true">*</asp:RegularExpressionValidator>
+                                                                    </InsertItemTemplate>
+                                                                </asp:TemplateField>
+                                                                <asp:TemplateField HeaderText="License Number">
+                                                                    <InsertItemTemplate>
+                                                                        <asp:TextBox ID="txtdvLicenseNumber" runat="server" MaxLength="20" CssClass="TextBox"></asp:TextBox>
+                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="txtdvLicenseNumber"
+                                                                            Display="Dynamic" ErrorMessage="Enter License Number" ValidationGroup="add">*</asp:RequiredFieldValidator>
+                                                                    </InsertItemTemplate>
+                                                                </asp:TemplateField>
+                                                                <asp:TemplateField HeaderText="License Issued Date">
+                                                                    <InsertItemTemplate>
+                                                                        <asp:TextBox ID="txtdvLicenseIssuedDate" runat="server" CssClass="TextBox" MaxLength="10"></asp:TextBox>
+                                                                        <cc1:CalendarExtender ID="txtdvLicenseIssuedDate_CalendarExtender" runat="server"
+                                                                            Enabled="True" TargetControlID="txtdvLicenseIssuedDate">
+                                                                        </cc1:CalendarExtender>
+                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" ControlToValidate="txtdvLicenseIssuedDate"
+                                                                            Display="Dynamic" ErrorMessage="Enter License Issued Date" ValidationGroup="add"
+                                                                            SetFocusOnError="true">*</asp:RequiredFieldValidator>
+                                                                        <asp:RegularExpressionValidator ID="RegularEessionValidator7" runat="server" ControlToValidate="txtdvLicenseIssuedDate"
+                                                                            Display="Dynamic" ErrorMessage="Enter Valid License Issued Date" ValidationExpression="^(([0]?[1-9]|1[0-2])/([0-2]?[0-9]|3[0-1])/[1-2]\d{3})? ?((([0-1]?\d)|(2[0-3])):[0-5]\d)?(:[0-5]\d)?$"
+                                                                            ValidationGroup="add" SetFocusOnError="true">*</asp:RegularExpressionValidator>
+                                                                    </InsertItemTemplate>
+                                                                </asp:TemplateField>
+                                                                <asp:TemplateField HeaderText="License Expiry Date">
+                                                                    <InsertItemTemplate>
+                                                                        <asp:TextBox ID="txtdvLicenseExpiryDate" runat="server" CssClass="TextBox" MaxLength="10"></asp:TextBox>
+                                                                        <cc1:CalendarExtender ID="txtdvLicenseExpiryDate_CalendarExtender" runat="server"
+                                                                            Enabled="True" TargetControlID="txtdvLicenseExpiryDate">
+                                                                        </cc1:CalendarExtender>
+                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator8" runat="server" ControlToValidate="txtdvLicenseExpiryDate"
+                                                                            Display="Dynamic" ErrorMessage="Enter License Expiry Date" ValidationGroup="add"
+                                                                            SetFocusOnError="true">*</asp:RequiredFieldValidator>
+                                                                        <asp:RegularExpressionValidator ID="RegularEessionValidator6" runat="server" ControlToValidate="txtdvLicenseExpiryDate"
+                                                                            Display="Dynamic" ErrorMessage="Enter Valid License Expiry Date" ValidationExpression="^(([0]?[1-9]|1[0-2])/([0-2]?[0-9]|3[0-1])/[1-2]\d{3})? ?((([0-1]?\d)|(2[0-3])):[0-5]\d)?(:[0-5]\d)?$"
+                                                                            ValidationGroup="add" SetFocusOnError="true">*</asp:RegularExpressionValidator>
+                                                                    </InsertItemTemplate>
+                                                                </asp:TemplateField>
+                                                                <asp:TemplateField HeaderText="Total Experience">
+                                                                    <InsertItemTemplate>
+                                                                        <asp:TextBox ID="txtdvTotalExperience" runat="server" CssClass="TextBox" MaxLength="10"></asp:TextBox>
+                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" ControlToValidate="txtdvTotalExperience"
+                                                                            Display="Dynamic" ErrorMessage="Enter Total Experience" ValidationGroup="add"
+                                                                            SetFocusOnError="true">*</asp:RequiredFieldValidator>
+                                                                    </InsertItemTemplate>
+                                                                </asp:TemplateField>
+                                                                <asp:TemplateField HeaderText="Area Of Residence">
+                                                                    <InsertItemTemplate>
+                                                                        <asp:TextBox ID="txtdvAreaOfResidence" runat="server" CssClass="TextBox" MaxLength="100"></asp:TextBox>
+                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator10" runat="server" ControlToValidate="txtdvAreaOfResidence"
+                                                                            Display="Dynamic" ErrorMessage="Enter Area Of Residence" ValidationGroup="add"
+                                                                            SetFocusOnError="true">*</asp:RequiredFieldValidator>
+                                                                    </InsertItemTemplate>
+                                                                </asp:TemplateField>
+                                                                <asp:TemplateField HeaderText="Contact1">
+                                                                    <InsertItemTemplate>
+                                                                        <asp:TextBox ID="txtdvContact1" runat="server" CssClass="TextBox" MaxLength="10"></asp:TextBox>
+                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator11" runat="server" ControlToValidate="txtdvContact1"
+                                                                            Display="Dynamic" ErrorMessage="Enter Contact1" ValidationGroup="add" SetFocusOnError="true">*</asp:RequiredFieldValidator>
+                                                                    </InsertItemTemplate>
+                                                                </asp:TemplateField>
+                                                                <asp:TemplateField HeaderText="Contact2">
+                                                                    <InsertItemTemplate>
+                                                                        <asp:TextBox ID="txtdvContact2" runat="server" CssClass="TextBox" MaxLength="10"></asp:TextBox>
+                                                                    </InsertItemTemplate>
+                                                                </asp:TemplateField>
+                                                                <asp:TemplateField ShowHeader="False">
+                                                                    <InsertItemTemplate>
+                                                                        <asp:LinkButton ID="lbSave" runat="server" CausesValidation="True" CommandName="Insert"
+                                                                            Text="Save" OnClick="lbSave_Click" ValidationGroup="add"></asp:LinkButton>
+                                                                        &nbsp;<asp:LinkButton ID="lbClose" runat="server" CausesValidation="False" CommandName="Cancel"
+                                                                            Text="Close" OnClick="lbClose_Click"></asp:LinkButton>
+                                                                    </InsertItemTemplate>
+                                                                    <ItemTemplate>
+                                                                        <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="New"
+                                                                            Text="New"></asp:LinkButton>
+                                                                    </ItemTemplate>
+                                                                </asp:TemplateField>
+                                                            </Fields>
+                                                            <RowStyle CssClass="DetailsViewRowStyle" />
+                                                            <FooterStyle CssClass="DetailsViewFooterStyle" />
+                                                            <PagerStyle CssClass="DetailsViewPagerStyle" />
+                                                            <HeaderStyle CssClass="DetailsViewHeaderStyle" />
+                                                            <AlternatingRowStyle CssClass="DetailsViewAltRowStyle" />
+                                                        </asp:DetailsView>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </asp:View>
+                                    </asp:MultiView>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </ContentTemplate>
+    </asp:UpdatePanel>
+</asp:Content>

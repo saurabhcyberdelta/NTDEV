@@ -1,0 +1,348 @@
+********** 3/24/2022 3:54:34 PM **********
+Exception Type: System.Threading.ThreadAbortException
+Exception: Thread was being aborted.
+Source: Catch Error
+Stack Trace: 
+   at OrderFile.ExportDataSetToExcel(DataSet ds, String filename) in e:\CODE BACKUP\NT\NTeTmsDev\OrderFile.aspx.cs:line 190
+   at OrderFile.btnSubmit_Click(Object sender, EventArgs e) in e:\CODE BACKUP\NT\NTeTmsDev\OrderFile.aspx.cs:line 147
+TargetSite: Void ExportDataSetToExcel(System.Data.DataSet, System.String)
+
+********** 3/24/2022 3:54:51 PM **********
+Exception Type: System.Threading.ThreadAbortException
+Exception: Thread was being aborted.
+Source: Catch Error
+Stack Trace: 
+   at OrderFile.ExportDataSetToExcel(DataSet ds, String filename) in e:\CODE BACKUP\NT\NTeTmsDev\OrderFile.aspx.cs:line 190
+   at OrderFile.btnSubmit_Click(Object sender, EventArgs e) in e:\CODE BACKUP\NT\NTeTmsDev\OrderFile.aspx.cs:line 147
+TargetSite: Void ExportDataSetToExcel(System.Data.DataSet, System.String)
+
+********** 3/24/2022 3:55:16 PM **********
+Exception Type: System.Threading.ThreadAbortException
+Exception: Thread was being aborted.
+Source: Catch Error
+Stack Trace: 
+   at OrderFile.ExportDataSetToExcel(DataSet ds, String filename) in e:\CODE BACKUP\NT\NTeTmsDev\OrderFile.aspx.cs:line 190
+   at OrderFile.btnSubmit_Click(Object sender, EventArgs e) in e:\CODE BACKUP\NT\NTeTmsDev\OrderFile.aspx.cs:line 147
+TargetSite: Void ExportDataSetToExcel(System.Data.DataSet, System.String)
+
+********** 3/24/2022 3:59:49 PM **********
+Exception Type: System.Threading.ThreadAbortException
+Exception: Thread was being aborted.
+Source: Catch Error
+Stack Trace: 
+   at OrderFile.ExportDataSetToExcel(DataSet ds, String filename) in e:\CODE BACKUP\NT\NTeTmsDev\OrderFile.aspx.cs:line 190
+   at OrderFile.btnSubmit_Click(Object sender, EventArgs e) in e:\CODE BACKUP\NT\NTeTmsDev\OrderFile.aspx.cs:line 147
+TargetSite: Void ExportDataSetToExcel(System.Data.DataSet, System.String)
+
+********** 3/24/2022 4:09:11 PM **********
+Inner Exception Type: System.TypeLoadException
+Inner Exception: Could not load type 'Microsoft.Reporting.LocalModeSecurityValidatorCallback' from assembly 'Microsoft.ReportViewer.Common, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.
+Inner Source: Microsoft.ReportViewer.WebForms
+Inner Stack Trace: 
+   at Microsoft.Reporting.WebForms.LocalReport..ctor()
+   at Microsoft.Reporting.WebForms.LocalModeSession..ctor()
+   at Microsoft.Reporting.WebForms.ReportHierarchy..ctor(ServerReport serverReport)
+   at Microsoft.Reporting.WebForms.ReportViewer.CreateReportHierarchy()
+   at Microsoft.Reporting.WebForms.ReportViewer..ctor()
+   at ASP.reptotalcost_aspx.__BuildControlReportViewer1() in e:\CODE BACKUP\NT\NTeTmsDev\RepTotalCost.aspx:line 98
+   at ASP.reptotalcost_aspx.__BuildControlPanel1() in e:\CODE BACKUP\NT\NTeTmsDev\RepTotalCost.aspx:line 97
+   at ASP.reptotalcost_aspx.__BuildControlContent2(Control __ctrl) in e:\CODE BACKUP\NT\NTeTmsDev\RepTotalCost.aspx:line 8
+   at System.Web.UI.CompiledTemplateBuilder.InstantiateIn(Control container)
+   at ASP.etmsmaster_master.__BuildControlContentPlaceHolder1() in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master:line 96
+   at ASP.etmsmaster_master.__BuildControlform1() in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master:line 36
+   at ASP.etmsmaster_master.__BuildControlTree(etmsmaster_master __ctrl) in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master:line 1
+   at ASP.etmsmaster_master.FrameworkInitialize() in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master.cs:line 912308
+   at System.Web.UI.UserControl.InitializeAsUserControlInternal()
+   at System.Web.UI.MasterPage.CreateMaster(TemplateControl owner, HttpContext context, VirtualPath masterPageFile, IDictionary contentTemplateCollection)
+   at System.Web.UI.Page.get_Master()
+   at System.Web.UI.Page.ApplyMasterPage()
+   at System.Web.UI.Page.PerformPreInit()
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+Exception Type: System.Web.HttpUnhandledException
+Exception: Exception of type 'System.Web.HttpUnhandledException' was thrown.
+Source: Application Page Error
+Stack Trace: 
+   at System.Web.UI.Page.HandleError(Exception e)
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest()
+   at System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   at System.Web.UI.Page.ProcessRequest(HttpContext context)
+   at ASP.reptotalcost_aspx.ProcessRequest(HttpContext context) in c:\Users\anurag\AppData\Local\Temp\Temporary ASP.NET Files\root\d56a88b2\f8f23fae\App_Web_gzdedxrl.10.cs:line 0
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+TargetSite: Boolean HandleError(System.Exception)
+
+********** 3/24/2022 5:02:38 PM **********
+Inner Exception Type: System.TypeLoadException
+Inner Exception: Could not load type 'Microsoft.Reporting.LocalModeSecurityValidatorCallback' from assembly 'Microsoft.ReportViewer.Common, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.
+Inner Source: Microsoft.ReportViewer.WebForms
+Inner Stack Trace: 
+   at Microsoft.Reporting.WebForms.LocalReport..ctor()
+   at Microsoft.Reporting.WebForms.LocalModeSession..ctor()
+   at Microsoft.Reporting.WebForms.ReportHierarchy..ctor(ServerReport serverReport)
+   at Microsoft.Reporting.WebForms.ReportViewer.CreateReportHierarchy()
+   at Microsoft.Reporting.WebForms.ReportViewer..ctor()
+   at ASP.repcabscostcalculate_aspx.__BuildControlReportViewer1() in e:\CODE BACKUP\NT\NTeTmsDev\RepCabsCostCalculate.aspx:line 154
+   at ASP.repcabscostcalculate_aspx.__BuildControlPanel1() in e:\CODE BACKUP\NT\NTeTmsDev\RepCabsCostCalculate.aspx:line 153
+   at ASP.repcabscostcalculate_aspx.__BuildControlContent2(Control __ctrl) in e:\CODE BACKUP\NT\NTeTmsDev\RepCabsCostCalculate.aspx:line 13
+   at System.Web.UI.CompiledTemplateBuilder.InstantiateIn(Control container)
+   at ASP.etmsmaster_master.__BuildControlContentPlaceHolder1() in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master:line 96
+   at ASP.etmsmaster_master.__BuildControlform1() in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master:line 36
+   at ASP.etmsmaster_master.__BuildControlTree(etmsmaster_master __ctrl) in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master:line 1
+   at ASP.etmsmaster_master.FrameworkInitialize() in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master.cs:line 912308
+   at System.Web.UI.UserControl.InitializeAsUserControlInternal()
+   at System.Web.UI.MasterPage.CreateMaster(TemplateControl owner, HttpContext context, VirtualPath masterPageFile, IDictionary contentTemplateCollection)
+   at System.Web.UI.Page.get_Master()
+   at System.Web.UI.Page.ApplyMasterPage()
+   at System.Web.UI.Page.PerformPreInit()
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+Exception Type: System.Web.HttpUnhandledException
+Exception: Exception of type 'System.Web.HttpUnhandledException' was thrown.
+Source: Application Page Error
+Stack Trace: 
+   at System.Web.UI.Page.HandleError(Exception e)
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest()
+   at System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   at System.Web.UI.Page.ProcessRequest(HttpContext context)
+   at ASP.repcabscostcalculate_aspx.ProcessRequest(HttpContext context) in c:\Users\anurag\AppData\Local\Temp\Temporary ASP.NET Files\root\d56a88b2\f8f23fae\App_Web_makhn2ky.6.cs:line 0
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+TargetSite: Boolean HandleError(System.Exception)
+
+********** 3/24/2022 5:02:52 PM **********
+Inner Exception Type: System.TypeLoadException
+Inner Exception: Could not load type 'Microsoft.Reporting.LocalModeSecurityValidatorCallback' from assembly 'Microsoft.ReportViewer.Common, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.
+Inner Source: Microsoft.ReportViewer.WebForms
+Inner Stack Trace: 
+   at Microsoft.Reporting.WebForms.LocalReport..ctor()
+   at Microsoft.Reporting.WebForms.LocalModeSession..ctor()
+   at Microsoft.Reporting.WebForms.ReportHierarchy..ctor(ServerReport serverReport)
+   at Microsoft.Reporting.WebForms.ReportViewer.CreateReportHierarchy()
+   at Microsoft.Reporting.WebForms.ReportViewer..ctor()
+   at ASP.repcabscostcalculate_aspx.__BuildControlReportViewer1() in e:\CODE BACKUP\NT\NTeTmsDev\RepCabsCostCalculate.aspx:line 154
+   at ASP.repcabscostcalculate_aspx.__BuildControlPanel1() in e:\CODE BACKUP\NT\NTeTmsDev\RepCabsCostCalculate.aspx:line 153
+   at ASP.repcabscostcalculate_aspx.__BuildControlContent2(Control __ctrl) in e:\CODE BACKUP\NT\NTeTmsDev\RepCabsCostCalculate.aspx:line 13
+   at System.Web.UI.CompiledTemplateBuilder.InstantiateIn(Control container)
+   at ASP.etmsmaster_master.__BuildControlContentPlaceHolder1() in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master:line 96
+   at ASP.etmsmaster_master.__BuildControlform1() in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master:line 36
+   at ASP.etmsmaster_master.__BuildControlTree(etmsmaster_master __ctrl) in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master:line 1
+   at ASP.etmsmaster_master.FrameworkInitialize() in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master.cs:line 912308
+   at System.Web.UI.UserControl.InitializeAsUserControlInternal()
+   at System.Web.UI.MasterPage.CreateMaster(TemplateControl owner, HttpContext context, VirtualPath masterPageFile, IDictionary contentTemplateCollection)
+   at System.Web.UI.Page.get_Master()
+   at System.Web.UI.Page.ApplyMasterPage()
+   at System.Web.UI.Page.PerformPreInit()
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+Exception Type: System.Web.HttpUnhandledException
+Exception: Exception of type 'System.Web.HttpUnhandledException' was thrown.
+Source: Application Page Error
+Stack Trace: 
+   at System.Web.UI.Page.HandleError(Exception e)
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest()
+   at System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   at System.Web.UI.Page.ProcessRequest(HttpContext context)
+   at ASP.repcabscostcalculate_aspx.ProcessRequest(HttpContext context) in c:\Users\anurag\AppData\Local\Temp\Temporary ASP.NET Files\root\d56a88b2\f8f23fae\App_Web_makhn2ky.6.cs:line 0
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+TargetSite: Boolean HandleError(System.Exception)
+
+********** 3/24/2022 5:02:56 PM **********
+Inner Exception Type: System.TypeLoadException
+Inner Exception: Could not load type 'Microsoft.Reporting.LocalModeSecurityValidatorCallback' from assembly 'Microsoft.ReportViewer.Common, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.
+Inner Source: Microsoft.ReportViewer.WebForms
+Inner Stack Trace: 
+   at Microsoft.Reporting.WebForms.LocalReport..ctor()
+   at Microsoft.Reporting.WebForms.LocalModeSession..ctor()
+   at Microsoft.Reporting.WebForms.ReportHierarchy..ctor(ServerReport serverReport)
+   at Microsoft.Reporting.WebForms.ReportViewer.CreateReportHierarchy()
+   at Microsoft.Reporting.WebForms.ReportViewer..ctor()
+   at ASP.repcabskmawarding_aspx.__BuildControlReportViewer1() in e:\CODE BACKUP\NT\NTeTmsDev\RepCabsKmAwarding.aspx:line 148
+   at ASP.repcabskmawarding_aspx.__BuildControlPanel1() in e:\CODE BACKUP\NT\NTeTmsDev\RepCabsKmAwarding.aspx:line 147
+   at ASP.repcabskmawarding_aspx.__BuildControlContent2(Control __ctrl) in e:\CODE BACKUP\NT\NTeTmsDev\RepCabsKmAwarding.aspx:line 7
+   at System.Web.UI.CompiledTemplateBuilder.InstantiateIn(Control container)
+   at ASP.etmsmaster_master.__BuildControlContentPlaceHolder1() in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master:line 96
+   at ASP.etmsmaster_master.__BuildControlform1() in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master:line 36
+   at ASP.etmsmaster_master.__BuildControlTree(etmsmaster_master __ctrl) in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master:line 1
+   at ASP.etmsmaster_master.FrameworkInitialize() in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master.cs:line 912308
+   at System.Web.UI.UserControl.InitializeAsUserControlInternal()
+   at System.Web.UI.MasterPage.CreateMaster(TemplateControl owner, HttpContext context, VirtualPath masterPageFile, IDictionary contentTemplateCollection)
+   at System.Web.UI.Page.get_Master()
+   at System.Web.UI.Page.ApplyMasterPage()
+   at System.Web.UI.Page.PerformPreInit()
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+Exception Type: System.Web.HttpUnhandledException
+Exception: Exception of type 'System.Web.HttpUnhandledException' was thrown.
+Source: Application Page Error
+Stack Trace: 
+   at System.Web.UI.Page.HandleError(Exception e)
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest()
+   at System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   at System.Web.UI.Page.ProcessRequest(HttpContext context)
+   at ASP.repcabskmawarding_aspx.ProcessRequest(HttpContext context) in c:\Users\anurag\AppData\Local\Temp\Temporary ASP.NET Files\root\d56a88b2\f8f23fae\App_Web_ymrppgqf.4.cs:line 0
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+TargetSite: Boolean HandleError(System.Exception)
+
+********** 3/24/2022 5:02:58 PM **********
+Inner Exception Type: System.TypeLoadException
+Inner Exception: Could not load type 'Microsoft.Reporting.LocalModeSecurityValidatorCallback' from assembly 'Microsoft.ReportViewer.Common, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.
+Inner Source: Microsoft.ReportViewer.WebForms
+Inner Stack Trace: 
+   at Microsoft.Reporting.WebForms.LocalReport..ctor()
+   at Microsoft.Reporting.WebForms.LocalModeSession..ctor()
+   at Microsoft.Reporting.WebForms.ReportHierarchy..ctor(ServerReport serverReport)
+   at Microsoft.Reporting.WebForms.ReportViewer.CreateReportHierarchy()
+   at Microsoft.Reporting.WebForms.ReportViewer..ctor()
+   at ASP.repfinalcost_aspx.__BuildControlReportViewer1() in e:\CODE BACKUP\NT\NTeTmsDev\RepFinalCost.aspx:line 107
+   at ASP.repfinalcost_aspx.__BuildControlPanel1() in e:\CODE BACKUP\NT\NTeTmsDev\RepFinalCost.aspx:line 106
+   at ASP.repfinalcost_aspx.__BuildControlContent2(Control __ctrl) in e:\CODE BACKUP\NT\NTeTmsDev\RepFinalCost.aspx:line 7
+   at System.Web.UI.CompiledTemplateBuilder.InstantiateIn(Control container)
+   at ASP.etmsmaster_master.__BuildControlContentPlaceHolder1() in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master:line 96
+   at ASP.etmsmaster_master.__BuildControlform1() in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master:line 36
+   at ASP.etmsmaster_master.__BuildControlTree(etmsmaster_master __ctrl) in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master:line 1
+   at ASP.etmsmaster_master.FrameworkInitialize() in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master.cs:line 912308
+   at System.Web.UI.UserControl.InitializeAsUserControlInternal()
+   at System.Web.UI.MasterPage.CreateMaster(TemplateControl owner, HttpContext context, VirtualPath masterPageFile, IDictionary contentTemplateCollection)
+   at System.Web.UI.Page.get_Master()
+   at System.Web.UI.Page.ApplyMasterPage()
+   at System.Web.UI.Page.PerformPreInit()
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+Exception Type: System.Web.HttpUnhandledException
+Exception: Exception of type 'System.Web.HttpUnhandledException' was thrown.
+Source: Application Page Error
+Stack Trace: 
+   at System.Web.UI.Page.HandleError(Exception e)
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest()
+   at System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   at System.Web.UI.Page.ProcessRequest(HttpContext context)
+   at ASP.repfinalcost_aspx.ProcessRequest(HttpContext context) in c:\Users\anurag\AppData\Local\Temp\Temporary ASP.NET Files\root\d56a88b2\f8f23fae\App_Web_ymrppgqf.2.cs:line 0
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+TargetSite: Boolean HandleError(System.Exception)
+
+********** 3/24/2022 5:32:51 PM **********
+Inner Exception Type: System.TypeLoadException
+Inner Exception: Could not load type 'Microsoft.Reporting.LocalModeSecurityValidatorCallback' from assembly 'Microsoft.ReportViewer.Common, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.
+Inner Source: Microsoft.ReportViewer.WebForms
+Inner Stack Trace: 
+   at Microsoft.Reporting.WebForms.LocalReport..ctor()
+   at Microsoft.Reporting.WebForms.LocalModeSession..ctor()
+   at Microsoft.Reporting.WebForms.ReportHierarchy..ctor(ServerReport serverReport)
+   at Microsoft.Reporting.WebForms.ReportViewer.CreateReportHierarchy()
+   at Microsoft.Reporting.WebForms.ReportViewer..ctor()
+   at ASP.repcabscostcalculate_aspx.__BuildControlReportViewer1() in e:\CODE BACKUP\NT\NTeTmsDev\RepCabsCostCalculate.aspx:line 154
+   at ASP.repcabscostcalculate_aspx.__BuildControlPanel1() in e:\CODE BACKUP\NT\NTeTmsDev\RepCabsCostCalculate.aspx:line 153
+   at ASP.repcabscostcalculate_aspx.__BuildControlContent2(Control __ctrl) in e:\CODE BACKUP\NT\NTeTmsDev\RepCabsCostCalculate.aspx:line 13
+   at System.Web.UI.CompiledTemplateBuilder.InstantiateIn(Control container)
+   at ASP.etmsmaster_master.__BuildControlContentPlaceHolder1() in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master:line 96
+   at ASP.etmsmaster_master.__BuildControlform1() in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master:line 36
+   at ASP.etmsmaster_master.__BuildControlTree(etmsmaster_master __ctrl) in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master:line 1
+   at ASP.etmsmaster_master.FrameworkInitialize() in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master.cs:line 912308
+   at System.Web.UI.UserControl.InitializeAsUserControlInternal()
+   at System.Web.UI.MasterPage.CreateMaster(TemplateControl owner, HttpContext context, VirtualPath masterPageFile, IDictionary contentTemplateCollection)
+   at System.Web.UI.Page.get_Master()
+   at System.Web.UI.Page.ApplyMasterPage()
+   at System.Web.UI.Page.PerformPreInit()
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+Exception Type: System.Web.HttpUnhandledException
+Exception: Exception of type 'System.Web.HttpUnhandledException' was thrown.
+Source: Application Page Error
+Stack Trace: 
+   at System.Web.UI.Page.HandleError(Exception e)
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest()
+   at System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   at System.Web.UI.Page.ProcessRequest(HttpContext context)
+   at ASP.repcabscostcalculate_aspx.ProcessRequest(HttpContext context) in c:\Users\anurag\AppData\Local\Temp\Temporary ASP.NET Files\root\d56a88b2\f8f23fae\App_Web_makhn2ky.6.cs:line 0
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+TargetSite: Boolean HandleError(System.Exception)
+
+********** 3/24/2022 5:57:51 PM **********
+Inner Exception Type: System.TypeLoadException
+Inner Exception: Could not load type 'Microsoft.Reporting.LocalModeSecurityValidatorCallback' from assembly 'Microsoft.ReportViewer.Common, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.
+Inner Source: Microsoft.ReportViewer.WebForms
+Inner Stack Trace: 
+   at Microsoft.Reporting.WebForms.LocalReport..ctor()
+   at Microsoft.Reporting.WebForms.LocalModeSession..ctor()
+   at Microsoft.Reporting.WebForms.ReportHierarchy..ctor(ServerReport serverReport)
+   at Microsoft.Reporting.WebForms.ReportViewer.CreateReportHierarchy()
+   at Microsoft.Reporting.WebForms.ReportViewer..ctor()
+   at ASP.repcabscostcalculate_aspx.__BuildControlReportViewer1() in e:\CODE BACKUP\NT\NTeTmsDev\RepCabsCostCalculate.aspx:line 154
+   at ASP.repcabscostcalculate_aspx.__BuildControlPanel1() in e:\CODE BACKUP\NT\NTeTmsDev\RepCabsCostCalculate.aspx:line 153
+   at ASP.repcabscostcalculate_aspx.__BuildControlContent2(Control __ctrl) in e:\CODE BACKUP\NT\NTeTmsDev\RepCabsCostCalculate.aspx:line 13
+   at System.Web.UI.CompiledTemplateBuilder.InstantiateIn(Control container)
+   at ASP.etmsmaster_master.__BuildControlContentPlaceHolder1() in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master:line 96
+   at ASP.etmsmaster_master.__BuildControlform1() in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master:line 36
+   at ASP.etmsmaster_master.__BuildControlTree(etmsmaster_master __ctrl) in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master:line 1
+   at ASP.etmsmaster_master.FrameworkInitialize() in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master.cs:line 912308
+   at System.Web.UI.UserControl.InitializeAsUserControlInternal()
+   at System.Web.UI.MasterPage.CreateMaster(TemplateControl owner, HttpContext context, VirtualPath masterPageFile, IDictionary contentTemplateCollection)
+   at System.Web.UI.Page.get_Master()
+   at System.Web.UI.Page.ApplyMasterPage()
+   at System.Web.UI.Page.PerformPreInit()
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+Exception Type: System.Web.HttpUnhandledException
+Exception: Exception of type 'System.Web.HttpUnhandledException' was thrown.
+Source: Application Page Error
+Stack Trace: 
+   at System.Web.UI.Page.HandleError(Exception e)
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest()
+   at System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   at System.Web.UI.Page.ProcessRequest(HttpContext context)
+   at ASP.repcabscostcalculate_aspx.ProcessRequest(HttpContext context) in c:\Users\anurag\AppData\Local\Temp\Temporary ASP.NET Files\root\d56a88b2\f8f23fae\App_Web_makhn2ky.6.cs:line 0
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+TargetSite: Boolean HandleError(System.Exception)
+
+********** 3/24/2022 6:22:22 PM **********
+Inner Exception Type: System.TypeLoadException
+Inner Exception: Could not load type 'Microsoft.Reporting.LocalModeSecurityValidatorCallback' from assembly 'Microsoft.ReportViewer.Common, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.
+Inner Source: Microsoft.ReportViewer.WebForms
+Inner Stack Trace: 
+   at Microsoft.Reporting.WebForms.LocalReport..ctor()
+   at Microsoft.Reporting.WebForms.LocalModeSession..ctor()
+   at Microsoft.Reporting.WebForms.ReportHierarchy..ctor(ServerReport serverReport)
+   at Microsoft.Reporting.WebForms.ReportViewer.CreateReportHierarchy()
+   at Microsoft.Reporting.WebForms.ReportViewer..ctor()
+   at ASP.repcabscostcalculate_aspx.__BuildControlReportViewer1() in e:\CODE BACKUP\NT\NTeTmsDev\RepCabsCostCalculate.aspx:line 154
+   at ASP.repcabscostcalculate_aspx.__BuildControlPanel1() in e:\CODE BACKUP\NT\NTeTmsDev\RepCabsCostCalculate.aspx:line 153
+   at ASP.repcabscostcalculate_aspx.__BuildControlContent2(Control __ctrl) in e:\CODE BACKUP\NT\NTeTmsDev\RepCabsCostCalculate.aspx:line 13
+   at System.Web.UI.CompiledTemplateBuilder.InstantiateIn(Control container)
+   at ASP.etmsmaster_master.__BuildControlContentPlaceHolder1() in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master:line 96
+   at ASP.etmsmaster_master.__BuildControlform1() in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master:line 36
+   at ASP.etmsmaster_master.__BuildControlTree(etmsmaster_master __ctrl) in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master:line 1
+   at ASP.etmsmaster_master.FrameworkInitialize() in e:\CODE BACKUP\NT\NTeTmsDev\eTMSMaster.Master.cs:line 912308
+   at System.Web.UI.UserControl.InitializeAsUserControlInternal()
+   at System.Web.UI.MasterPage.CreateMaster(TemplateControl owner, HttpContext context, VirtualPath masterPageFile, IDictionary contentTemplateCollection)
+   at System.Web.UI.Page.get_Master()
+   at System.Web.UI.Page.ApplyMasterPage()
+   at System.Web.UI.Page.PerformPreInit()
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+Exception Type: System.Web.HttpUnhandledException
+Exception: Exception of type 'System.Web.HttpUnhandledException' was thrown.
+Source: Application Page Error
+Stack Trace: 
+   at System.Web.UI.Page.HandleError(Exception e)
+   at System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   at System.Web.UI.Page.ProcessRequest()
+   at System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   at System.Web.UI.Page.ProcessRequest(HttpContext context)
+   at ASP.repcabscostcalculate_aspx.ProcessRequest(HttpContext context) in c:\Users\anurag\AppData\Local\Temp\Temporary ASP.NET Files\root\d56a88b2\f8f23fae\App_Web_makhn2ky.6.cs:line 0
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+TargetSite: Boolean HandleError(System.Exception)
+

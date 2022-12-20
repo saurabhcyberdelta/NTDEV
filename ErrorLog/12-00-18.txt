@@ -1,0 +1,12 @@
+********** 12/12/2018 4:42:42 PM **********
+Exception Type: System.Threading.ThreadAbortException
+Exception: Thread was being aborted.
+Source: catch error
+Stack Trace: 
+   at System.Threading.Thread.AbortInternal()
+   at System.Threading.Thread.Abort(Object stateInfo)
+   at System.Web.HttpResponse.End()
+   at GridViewExportUtil.Export(String fileName, GridView gv) in e:\eTMS Softwares\NTeTmsDev\App_Code\GridViewExportUtil.cs:line 69
+   at TotalVendorBilling.LkbExportExl_Click(Object sender, EventArgs e) in e:\eTMS Softwares\NTeTmsDev\TotalVendorBilling.aspx.cs:line 111
+TargetSite: Void AbortInternal()
+

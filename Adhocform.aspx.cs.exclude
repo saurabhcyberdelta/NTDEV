@@ -1,0 +1,96 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+public partial class Adhocform : basepage
+{
+    DataClasses1DataContext tms = new DataClasses1DataContext();
+   
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        try
+        {
+            if (!IsPostBack)
+            {
+                CompareValidator5.ValueToCompare = DateTime.Today.ToString();
+                bindreason();
+                bindFacility();
+                bindgrid();
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+            throw (ex);
+        }
+    }
+    protected void bindreason()
+    {
+        ddlReason.DataSource = tms.SelectAdhocreason();
+        ddlReason.DataTextField = "Reason";
+        ddlReason.DataValueField = "Id";
+        ddlReason.DataBind();
+    }
+    protected void bindFacility()
+    {
+        ddlFacility.DataSource = tms.SelectFacility(MyApplicationSession._UserID, MyApplicationSession._ISAdmin);
+        ddlFacility.DataTextField = "facilityname";
+        ddlFacility.DataValueField = "Id";
+        ddlFacility.DataBind();
+    }
+    protected void ddlTripType_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        string type = ddlTripType.SelectedValue;
+        int fid=Convert.ToInt32(ddlFacility.SelectedValue);
+        ddlShift.DataSource = tms.GetShiftByFacilityType(fid, type);
+        ddlShift.DataTextField = "shiftTime";
+        ddlShift.DataBind();
+    }
+    protected void bindgrid()
+    {
+        int id = Convert.ToInt32(Session["Spoc"].ToString());
+        grdEmployeeSchedule.DataSource = tms.GetEmployeeSchedule(id, DateTime.Now.Date);
+        grdEmployeeSchedule.DataBind();
+
+    }
+    protected void grdEmployeeSchedule_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
+    protected void btnSave_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            int i = 0;
+            String id = null, final = null;
+            int count = grdEmployeeSchedule.Rows.Count;
+            for (i = 0; i < count; i++)
+            {
+                CheckBox ck = (CheckBox)grdEmployeeSchedule.Rows[i].FindControl("chkBxEmpId");
+                if (ck.Checked == true)
+                {
+                    if (id != null)
+                    {
+                        final = final + id + ",";
+                    }
+                    id = grdEmployeeSchedule.DataKeys[i].Value.ToString();
+
+                }
+            }
+            final = final + id;
+            lblSaveMsg.Visible = true;
+            int ij = 1589;
+            tms.SendAdhoc(final, Convert.ToInt32(ddlReason.SelectedValue), Convert.ToInt32(ddlFacility.SelectedValue), ddlTripType.SelectedValue, Convert.ToDateTime(txtToDate.Text), ddlShift.SelectedValue, ij);
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+            throw (ex);
+        }
+    }
+}

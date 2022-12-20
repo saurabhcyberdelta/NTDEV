@@ -1,0 +1,711 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.IO;
+using System.Text.RegularExpressions;
+using ReportTableAdapters;
+public partial class Reportmaster : basepage
+{
+    GenerateReportTableAdapter ds = new GenerateReportTableAdapter();
+    DataClasses1DataContext tms = new DataClasses1DataContext();
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        try
+        {
+            if (!IsPostBack)
+            {
+                txtStartDate.Text = DateTime.Now.Date.ToString("MM/dd/yyyy");
+                txtEndDate.Text = DateTime.Now.Date.ToString("MM/dd/yyyy");
+               
+                BndFacilityDdl();
+                RadioButtonList1.SelectedIndex = 1;
+                RadioButtonList1.DataSource = tms.GetReportNames();
+                RadioButtonList1.DataBind();
+                Label1.Visible = false;
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+            throw (ex);
+        }
+    }
+
+
+    protected void btnAdd_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            if (lblAvailable.SelectedIndex < 0)
+            {
+                ShowMessage("Please select the column to add");
+            }
+            else
+            {
+                String lb = lblAvailable.SelectedItem.ToString();
+
+                DataTable dt = new DataTable();
+                dt.Columns.Add("Caption");
+                dt.Columns.Add("ID");
+                dt.Columns.Add("Filter");
+
+                if (gvSelected.Rows.Count > 0)
+                {
+                    for (int i = 0; i < gvSelected.Rows.Count; i++)
+                    {
+                        DataRow row = dt.NewRow();
+
+                        Label lbcolumn = (Label)gvSelected.Rows[i].FindControl("lbColumn");
+                        TextBox txtFilter = (TextBox)gvSelected.Rows[i].FindControl("txtFilter");
+                        DropDownList ddlFilter = (DropDownList)gvSelected.Rows[i].FindControl("ddlFilter");
+                        Label lbFilter = (Label)gvSelected.Rows[i].FindControl("lblFiltertype");
+                        row["Caption"] = lbcolumn.Text;
+                        row["Id"] = gvSelected.DataKeys[i].Value.ToString();
+                        row["Filter"] = lbFilter.Text;
+                        dt.Rows.Add(row);
+                    }
+
+                }
+                Label1.Visible = false;
+                if (lblAvailable.SelectedValue != null)
+                {
+                    string[] Spilitted = lblAvailable.SelectedValue.ToString().Split(',');
+                    DataRow row = dt.NewRow();
+                    row["Caption"] = lblAvailable.SelectedItem.ToString();
+                    row["ID"] = Spilitted[0];
+                    row["Filter"] = Spilitted[1];
+                    ListItem li = new ListItem(lblAvailable.SelectedItem.ToString(), lblAvailable.SelectedValue.ToString());
+                    lblAvailable.Items.Remove(li);
+                    dt.Rows.Add(row);
+
+
+                }
+                gvSelected.DataSource = dt;
+                gvSelected.DataBind();
+
+                assignfilter();
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+            throw (ex);
+        }
+    }
+
+    protected void lblAvailable_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        //string id = lblAvailable.SelectedItem.ToString(); ;
+    }
+    protected void btnRemove_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            int cnt = 0;
+            for (int i = 0; i < gvSelected.Rows.Count; i++)
+            {
+                CheckBox cb = (CheckBox)gvSelected.Rows[i].FindControl("cbChecked");
+                if (cb.Checked)
+                {
+                    cnt++;
+                }
+            }
+            if (cnt == 0)
+            {
+                ShowMessage("Please select column to remove");
+            }
+            else
+            {
+
+                Label1.Visible = false;
+                DataTable dt = new DataTable();
+                dt.Columns.Add("Caption");
+                dt.Columns.Add("ID");
+                dt.Columns.Add("Filter");
+                if (gvSelected.Rows.Count > 0)
+                {
+                    for (int i = 0; i < gvSelected.Rows.Count; i++)
+                    {
+                        DataRow row = dt.NewRow();
+
+                        Label lbcolumn = (Label)gvSelected.Rows[i].FindControl("lbColumn");
+                        TextBox txtFilter = (TextBox)gvSelected.Rows[i].FindControl("txtFilter");
+                        DropDownList ddlFilter = (DropDownList)gvSelected.Rows[i].FindControl("ddlFilter");
+                        Label lbFilter = (Label)gvSelected.Rows[i].FindControl("lblFiltertype");
+                        row["Caption"] = lbcolumn.Text;
+                        row["Id"] = gvSelected.DataKeys[i].Value.ToString();
+                        row["Filter"] = lbFilter.Text;
+                        dt.Rows.Add(row);
+                    }
+
+                }
+                int id = 0;
+                int flag = 0;
+                int j = 0;
+                for (int i = 0; i < gvSelected.Rows.Count; i++)
+                {
+                    CheckBox cb = (CheckBox)gvSelected.Rows[i].FindControl("cbChecked");
+                    if (cb.Checked)
+                    {
+                        Label lb = (Label)gvSelected.Rows[i].FindControl("lbColumn");
+                        id = Convert.ToInt32(gvSelected.DataKeys[i].Value.ToString());
+                        String right = tms.GetReportRights(id).ElementAtOrDefault(0).Rights.Value.ToString();
+                        if (right != "1")
+                        {
+
+
+                            Label lbFilter = (Label)gvSelected.Rows[i].FindControl("lblFiltertype");
+                            ListItem li = new ListItem();
+                            li.Text = lb.Text;
+                            li.Value = gvSelected.DataKeys[i].Value.ToString() + "," + lbFilter.Text;
+                            lblAvailable.Items.Add(li);
+                            for (j = 0; j < dt.Rows.Count; j++)
+                            {
+                                if (Convert.ToInt32(dt.Rows[j]["Id"]) == id)
+                                {
+                                    dt.Rows[j].Delete();
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            flag = 1;
+                        }
+                    }
+                }
+                if (flag == 1)
+                {
+                    ShowMessage("Mandatory columns can not be removed from selected grid");
+                }
+                gvSelected.DataSource = dt;
+                gvSelected.DataBind();
+                assignfilter();
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+            throw (ex);
+        }
+    }
+    protected void btnSave_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            Label1.Visible = false;
+            String columns = string.Empty;
+            String value = null;
+            if (txtReporttitle.Text != null && gvSelected.Rows.Count > 0)
+            {
+                for (int i = 0; i < gvSelected.Rows.Count; i++)
+                {
+                    string id = gvSelected.DataKeys[i].Value.ToString();
+                    columns = columns + id + ",";
+
+                }
+                int lengthcol = columns.Length;
+                columns = columns.Substring(0, lengthcol - 1);
+                int selectedrep = Convert.ToInt32(RadioButtonList1.SelectedValue.ToString());
+
+                string flag = tms.AddView(txtReporttitle.Text, columns, selectedrep).ElementAtOrDefault(0).Result.Value.ToString();
+
+                if (flag == "1")
+                {
+                    Label1.Visible = true;
+
+                    ShowMessage("View Updated Successfully");
+                    Label1.Text = "View Updated Successfully";
+                    ddlViews.SelectedIndex = ddlViews.Items.IndexOf(ddlViews.Items.FindByText(txtReporttitle.Text.ToString()));
+                    txtReporttitle.Text = string.Empty;
+                }
+                else
+                {
+
+                    Label1.Visible = true;
+                    ddlViews.SelectedIndex = ddlViews.Items.IndexOf(ddlViews.Items.FindByText(txtReporttitle.Text.ToString()));
+                    txtReporttitle.Text = string.Empty;
+                    ShowMessage("View Saved Successfully");
+                    Label1.Text = "View Saved Successfully";
+                }
+                bindddlview();
+            }
+            else
+            {
+                ShowMessage("There is no column to save in view");
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+            throw (ex);
+        }
+    }
+    protected void bindddlview()
+    {
+        ddlViews.Items.Clear();
+        ListItem li = new ListItem("Select the View", "0");
+        ddlViews.Items.Add(li);
+        int selectedrep = Convert.ToInt32(RadioButtonList1.SelectedValue.ToString());
+
+        ddlViews.DataSource = tms.GetViewAll(selectedrep);
+        ddlViews.DataTextField = "Name";
+        ddlViews.DataValueField = "id";
+        ddlViews.DataBind();
+    }
+    protected void ddlViews_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        int selectedrep = Convert.ToInt32(RadioButtonList1.SelectedIndex);
+        BndListAvailable(selectedrep);
+        Label1.Visible = false;
+        if (ddlViews.SelectedIndex > 0)
+        {
+            gvSelected.DataSource = null;
+            gvSelected.DataBind();
+            gvSelected.DataSource = tms.getViewDetail(Convert.ToInt32(ddlViews.SelectedValue.ToString()));
+            gvSelected.DataBind();
+            Bindgriddifference();
+
+        }
+        else if (ddlViews.SelectedIndex == 0)
+        {
+            BndbothGrid();
+            txtReporttitle.Text = string.Empty;
+        }
+        assignfilter();
+
+    }
+    protected void CheckBoxList1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+
+    }
+    protected void BndListAvailable(int selectedrep)
+    {
+        lblAvailable.Items.Clear();
+        lblAvailable.DataSource = tms.getReportColumn(selectedrep, 0, MyApplicationSession._UserID);
+
+        lblAvailable.DataTextField = "Caption";
+        lblAvailable.DataValueField = "filterID";
+        lblAvailable.DataBind();
+
+    }
+    protected void BndGVSelected(int selectedrep)
+    {
+        gvSelected.DataSource = tms.getReportColumn(selectedrep, 1, MyApplicationSession._UserID);
+        gvSelected.DataBind();
+        assignfilter();
+    }
+    protected void assignfilter()
+    {
+        try
+        {
+            for (int i = 0; i < gvSelected.Rows.Count; i++)
+            {
+
+
+                Label lbcolumn = (Label)gvSelected.Rows[i].FindControl("lbColumn");
+                Label lbFilter = (Label)gvSelected.Rows[i].FindControl("lblFiltertype");
+                TextBox txtFilter = (TextBox)gvSelected.Rows[i].FindControl("txtFilter");
+                DropDownList ddlFilter = (DropDownList)gvSelected.Rows[i].FindControl("ddlFilter");
+                CheckBox cbChecked = (CheckBox)gvSelected.Rows[i].FindControl("cbChecked");
+              
+                
+                string lbfilters = lbFilter.Text;
+                String right = tms.GetReportRights(Convert.ToInt32(gvSelected.DataKeys[i].Value)).ElementAtOrDefault(0).Rights.Value.ToString();
+                if (right != "1")
+                {
+                    cbChecked.Enabled = true;
+                }
+
+                if (lbfilters == "TextBox")
+                {
+
+                    txtFilter.Visible = true;
+                    ddlFilter.Visible = false;
+
+                }
+                else
+                {
+                    int id = Convert.ToInt32(gvSelected.DataKeys[i].Value);
+                    string columns = tms.GetColumnvalue(id).ElementAtOrDefault(0).Value.ToString();
+                    if (columns == "Facility")
+                    {
+
+                        txtFilter.Visible = false;
+                        ddlFilter.Visible = true;
+                        ddlFilter.DataSource = tms.GetAllValuesDropDown("Facility", MyApplicationSession._LocationId, Convert.ToInt32(ddlFacility.SelectedValue), rdoTripType.SelectedValue.ToString());
+                        ddlFilter.DataTextField = "Caption";
+                        ddlFilter.DataValueField = "Caption";
+
+                        ddlFilter.DataBind();
+                    }
+                    else if (columns == "shiftTime" || columns == "Shift")
+                    {
+
+                        txtFilter.Visible = false;
+                        ddlFilter.Visible = true;
+                        ddlFilter.Items.Clear();
+                        ListItem li = new ListItem("All", "0");
+                        ddlFilter.Items.Add(li);
+
+                        ddlFilter.DataSource = tms.GetAllValuesDropDown("Shift", MyApplicationSession._LocationId, Convert.ToInt32(ddlFacility.SelectedValue), rdoTripType.SelectedValue.ToString());
+                        ddlFilter.DataTextField = "Caption";
+                        ddlFilter.DataValueField = "Caption";
+
+                        ddlFilter.DataBind();
+
+                    }
+                    else if (columns == "Penalty")
+                    {
+
+                        txtFilter.Visible = false;
+                        ddlFilter.Visible = true;
+                        ddlFilter.Items.Clear();
+                        ListItem li = new ListItem("All", "0");
+                        ddlFilter.Items.Add(li);
+
+                        ddlFilter.DataSource = tms.GetPenaltyType();
+                        ddlFilter.DataTextField = "HeadName";
+                        ddlFilter.DataValueField = "ID";
+
+                        ddlFilter.DataBind();
+
+                    }
+                    else if (columns == "Vendor")
+                    {
+
+                        txtFilter.Visible = false;
+                        ddlFilter.Visible = true;
+                        ddlFilter.Items.Clear();
+                        ListItem li = new ListItem("All", "0");
+                        ddlFilter.Items.Add(li);
+
+                        ddlFilter.DataSource = tms.GetAllValuesDropDown("Vendor", MyApplicationSession._LocationId, Convert.ToInt32(ddlFacility.SelectedValue), rdoTripType.SelectedValue.ToString());
+                        ddlFilter.DataTextField = "Caption";
+                        ddlFilter.DataValueField = "Caption";
+
+                        ddlFilter.DataBind();
+
+
+                    }
+                    else if (columns == "Pick / Drop")
+                    {
+
+                        txtFilter.Visible = false;
+                        ddlFilter.Visible = true;
+                        ddlFilter.Items.Clear();
+                        ListItem li = new ListItem("Pick", "P");
+                        ddlFilter.Items.Add(li);
+                        ListItem li1 = new ListItem("Drop", "D");
+                        ddlFilter.Items.Add(li1);
+                        ddlFilter.DataBind();
+
+
+                    }
+                    else if (columns == "Gender")
+                    {
+
+                        txtFilter.Visible = false;
+                        ddlFilter.Visible = true;
+                        ddlFilter.Items.Clear();
+                        ListItem li3 = new ListItem("All", "0");
+                        ddlFilter.Items.Add(li3);
+                        ListItem li = new ListItem("Male", "M");
+                        ddlFilter.Items.Add(li);
+                        ListItem li1 = new ListItem("Female", "F");
+                        ddlFilter.Items.Add(li1);
+                        ddlFilter.DataBind();
+
+
+                    }
+                    else if (columns == "Process")
+                    {
+
+                        txtFilter.Visible = false;
+                        ddlFilter.Visible = true;
+                        ddlFilter.Items.Clear();
+                        ddlFilter.Items.Clear();
+                        ListItem li = new ListItem("All", "0");
+                        ddlFilter.Items.Add(li);
+
+                        ddlFilter.DataSource = tms.GetProcessByFacility(Convert.ToInt32(ddlFacility.SelectedValue));
+                        ddlFilter.DataTextField = "processName";
+                        ddlFilter.DataValueField = "Id";
+                        ddlFilter.DataBind();
+
+
+                    }
+                    else if (columns == "trackingRemark")
+                    {
+                        txtFilter.Visible = false;
+                        ddlFilter.Visible = true;
+                        ddlFilter.Items.Clear();
+                        ddlFilter.Items.Clear();
+                        ListItem li3 = new ListItem("All", "0");
+                        ddlFilter.Items.Add(li3);
+                        ListItem li = new ListItem("Boarded", "Boarded");
+                        ddlFilter.Items.Add(li);
+                        ListItem li1 = new ListItem("No-Show", "No-Show");
+                        ddlFilter.Items.Add(li1);
+                        ListItem li2 = new ListItem("Cancel", "Cancel");
+                        ddlFilter.Items.Add(li2);
+                        ddlFilter.DataBind();
+                    }
+                    else if (columns == "guard")
+                    {
+                        txtFilter.Visible = false;
+                        ddlFilter.Visible = true;
+                        ddlFilter.Items.Clear();
+                        ddlFilter.Items.Clear();
+                        ListItem li3 = new ListItem("All", "0");
+                        ddlFilter.Items.Add(li3);
+                        ListItem li = new ListItem("YES", "YES");
+                        ddlFilter.Items.Add(li);
+                        ListItem li1 = new ListItem("NO", "NO");
+                        ddlFilter.Items.Add(li1);
+
+                        ddlFilter.DataBind();
+                    }
+                }
+
+
+
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+            throw (ex);
+        }
+    }
+    protected void btnGenerate_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            int i = 0;
+            string[] columns = new string[100];
+            string[] value = new string[100];
+            string col = null;
+            string where = null;
+            if (gvSelected.Rows.Count > 0)
+            {
+                int flag = 0;
+                for (i = 0; i < gvSelected.Rows.Count; i++)
+                {
+                    where = null;
+                    int id = Convert.ToInt32(gvSelected.DataKeys[i].Value);
+                    Label lbcolumn = (Label)gvSelected.Rows[i].FindControl("lbColumn");
+                    Label lbFilter = (Label)gvSelected.Rows[i].FindControl("lblFiltertype");
+                    TextBox txtFilter = (TextBox)gvSelected.Rows[i].FindControl("txtFilter");
+                    DropDownList ddlFilter = (DropDownList)gvSelected.Rows[i].FindControl("ddlFilter");
+                    string lbfilters = lbFilter.Text;
+
+
+                    columns[i] = tms.GetColumnvalue(id).ElementAtOrDefault(0).Value.ToString();
+                    String u = columns[i];
+                    if (lbfilters == "TextBox")
+                    {
+                        if (txtFilter.Text == string.Empty)
+                        {
+                            value[i] = "%";
+                        }
+                        else if (lbcolumn.Text == "Dates")
+                        {
+                            Regex date = new Regex("^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.]((19|20)[0-9][0-9])$");
+                            if (date.IsMatch(txtFilter.Text))
+                            {
+                                value[i] = txtFilter.Text;
+                            }
+                            else
+                            {
+                                flag = 1;
+                                break;
+                            }
+                        }
+                        else
+                            value[i] = txtFilter.Text;
+
+                    }
+                        
+                    else if (lbfilters == "DropDownList")
+                    {
+
+                        value[i] = ddlFilter.SelectedItem.ToString();
+
+                    if(value[i]=="All")
+                    {
+                    value[i]="%";
+                    }
+                    }
+                    else
+                        value[i] = "%";
+
+                }
+                for (i = 0; i < gvSelected.Rows.Count; i++)
+                {
+                    col = col + columns[i] + ",";
+
+                    if (value[i] == "%")
+                    {
+                        where = where + " " + columns[i] + "  " + "LIKE" + " " + "'" + value[i] + "'" + " " + "AND";
+                    }
+                    else
+                    {
+                        where = where + " " + columns[i] + "=" + "'" + value[i] + "'" + " " + "AND";
+                    }
+                }
+                lblErrorMsg.Visible = true;
+                if (col.Length > 0)
+                {
+                    col = col.Substring(0, col.Length - 1);
+                }
+                if (where.Length > 0)
+                {
+
+                    where = where.Substring(0, where.Length - 3);
+                }
+                int selectedrep = Convert.ToInt32(RadioButtonList1.SelectedValue.ToString());
+                string query;
+                if (selectedrep == 1 || selectedrep == 2)
+                {
+                    query = "Select DISTINCT facility,shiftDate,Triptype, " + col + " " + "from @temp Where" + where;
+                }
+                else
+                {
+                    query = "Select DISTINCT facility,shiftDate, " + col + " " + "from @temp Where" + where;
+                }
+                
+                    if (flag != 1)
+                {
+                //    int selectedrep = Convert.ToInt32(RadioButtonList1.SelectedValue.ToString());
+                    string fid;
+                    if (ddlFacility.SelectedValue.ToString() == "0")
+                        fid = "%";
+                    else
+                        fid = ddlFacility.SelectedValue.ToString();
+                    String trptype;
+                    if (rdoTripType.SelectedValue == "B")
+                        trptype = "%";
+                    else
+                        trptype = rdoTripType.SelectedValue.ToString();
+                   
+                   
+                    gvReport.DataSource = ds.GetData(query, selectedrep,fid,trptype,txtStartDate.Text,txtEndDate.Text);
+                    gvReport.DataBind();
+                    GridViewExportUtil.Export(RadioButtonList1.SelectedItem.ToString() + ".XLS", gvReport);
+                }
+                else
+                {
+                    ShowMessage("The value added in filters are not valid");
+                }
+
+
+
+            }
+            else
+            {
+                ShowMessage("No rows is there to show report");
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and notify system operators
+            ExceptionUtility.LogException(ex, "Catch Error");
+            throw (ex);
+        }
+    }
+    protected void RadioButtonList1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        MultiView1.ActiveViewIndex = -1;
+    }
+    public static void ExportDataSetToExcel(GridView dt, string filename)
+    {
+        //*************************************
+        //creates object of stringwriter and htmltextwriter
+        //reads the dataset and exports the data items to an excel file
+        //*************************************
+
+    }
+    private void ShowMessage(string message)
+    {
+        string jScript = "alert('" + message + "');";
+        ScriptManager.RegisterStartupScript(this, this.GetType(), "updated", jScript, true);
+
+    }
+    protected void BndbothGrid()
+    {
+        int selectedrep = Convert.ToInt32(RadioButtonList1.SelectedValue.ToString());
+        MultiView1.ActiveViewIndex = 0;
+
+        BndListAvailable(selectedrep);
+
+        BndGVSelected(selectedrep);
+        bindddlview();
+
+    }
+    
+    protected void BndFacilityDdl()
+    {
+        
+        
+
+            ListItem lifac = new ListItem("All Facilities", "0");
+            ddlFacility.Items.Clear();
+            ddlFacility.Items.Add(lifac);
+
+            ddlFacility.DataSource = tms.SelectFacility(MyApplicationSession._UserID, MyApplicationSession._ISAdmin);
+            ddlFacility.DataTextField = "facilityName";
+            ddlFacility.DataValueField = "Id";
+            ddlFacility.DataBind();
+
+        
+    }
+    protected void btnSubmit_Click(object sender, EventArgs e)
+    {
+        if (RadioButtonList1.SelectedIndex == -1)
+        {
+            ShowMessage("Please Select the Report");
+        }
+        else
+        {
+            BndbothGrid();
+        }
+    }
+    protected void rdoTripType_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        MultiView1.ActiveViewIndex = -1;
+    }
+    protected void ddlFacility_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        MultiView1.ActiveViewIndex = -1;
+    }
+    protected void Bindgriddifference()
+    {
+        int availablecount = lblAvailable.Items.Count;
+        int i = 0, j = 0;
+        string col = null;
+        for (i = 0; i < gvSelected.Rows.Count; i++)
+        {
+            Label lbcolumn = (Label)gvSelected.Rows[i].FindControl("lbColumn");
+            col = lbcolumn.Text;
+            for (j = 0; j < lblAvailable.Items.Count; j++)
+            {
+                if (lblAvailable.Items[j].Text == col)
+                {
+                    ListItem li = new ListItem(lblAvailable.Items[j].Text, lblAvailable.Items[j].Value);
+                    lblAvailable.Items.Remove(li);
+                }
+            }
+        }
+    }
+}
